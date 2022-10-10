@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 
-	bufbuild "github.com/tk42/auto-redial/gen/proto/golang/github.com/tk42/autoredial"
+	bufbuild "github.com/tk42/auto-redial/gen/proto/golang/github.com/tk42/auto-redial"
 
 	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
