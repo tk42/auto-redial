@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package api.v1;
 
-option go_package = "github.com/tk42/sqlc-buf-pg-template;apiv1";
+option go_package = "github.com/tk42/auto-redial;apiv1";
 
 import "google/type/datetime.proto";
 import "google/protobuf/duration.proto";

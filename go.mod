@@ -1,6 +1,6 @@
-module github.com/tk42/sqlc-buf-pg-template
+module github.com/tk42/auto-redial
 
-go 1.18
+go 1.19
 
 require (
 	github.com/lib/pq v1.10.5
