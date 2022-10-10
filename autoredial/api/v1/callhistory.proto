@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/tk42/sqlc-buf-pg-template;apiv1";
+
+import "google/type/datetime.proto";
+import "google/protobuf/duration.proto";
+
+message CallHistory {
+  string id = 1;
+  string scammer_id = 2;
+  google.type.DateTime call_at = 3;
+  google.protobuf.Duration call_time = 4;
+  bool result = 5;
+  optional google.protobuf.Duration talk_time = 6;
+}
+
+message GetCallHistoryRequest {
+  string id = 1;
+}
+
+message GetCallHistoryResponse {
+  repeated CallHistory call = 1;
+}
+
+message PutCallHistoryRequest {
+  string id = 1;
+  string scammer_id = 2;
+  google.type.DateTime call_at = 3;
+  google.protobuf.Duration call_time = 4;
+  bool result = 5;
+  optional google.protobuf.Duration talk_time = 6;
+}
+
+message PutCallHistoryResponse {
+  CallHistory call = 1;
+}
+
+message DeleteCallHistoryRequest {
+  repeated string id = 1;
+}
+
+message DeleteCallHistoryResponse {}
+
+service CallHistoryStoreService {
+  rpc GetCallHistory(GetCallHistoryRequest) returns (GetCallHistoryResponse) {}
+  rpc PutCallHistory(PutCallHistoryRequest) returns (PutCallHistoryResponse) {}
+  rpc DeleteCallHistory(DeleteCallHistoryRequest) returns (DeleteCallHistoryResponse) {}
+}

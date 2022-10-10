@@ -2,15 +2,61 @@
 // versions:
 //   sqlc v1.13.0
 
-package pet
+package api
 
 import (
 	"database/sql"
 )
 
-type Author struct {
-	ID       int64          `json:"id"`
-	Name     string         `json:"name"`
-	Bio      sql.NullString `json:"bio"`
-	CreateAt interface{}    `json:"create_at"`
+type Callhistory struct {
+	ID        string         `json:"id"`
+	ScammerID sql.NullString `json:"scammer_id"`
+	CallAt    interface{}    `json:"call_at"`
+	CallTime  sql.NullInt32  `json:"call_time"`
+	Result    sql.NullBool   `json:"result"`
+	TalkTime  sql.NullInt32  `json:"talk_time"`
+}
+
+type Matching struct {
+	ID           string         `json:"id"`
+	CreatedAt    interface{}    `json:"created_at"`
+	SerialNumber sql.NullInt64  `json:"serial_number"`
+	Matched      sql.NullBool   `json:"matched"`
+	Checked      sql.NullBool   `json:"checked"`
+	MatchingAt   interface{}    `json:"matching_at"`
+	TalkTime     sql.NullInt32  `json:"talk_time"`
+	Transcript   sql.NullString `json:"transcript"`
+}
+
+type Metric struct {
+	ID        string         `json:"id"`
+	CreatedAt interface{}    `json:"created_at"`
+	Calls     sql.NullInt32  `json:"calls"`
+	Scammers  sql.NullInt32  `json:"scammers"`
+	Inactives sql.NullInt32  `json:"inactives"`
+	CallTime  sql.NullInt32  `json:"call_time"`
+	TalkTime  sql.NullInt32  `json:"talk_time"`
+	Amount    sql.NullString `json:"amount"`
+}
+
+type Scammer struct {
+	ID       string         `json:"id"`
+	Name     sql.NullString `json:"name"`
+	Tel      sql.NullString `json:"tel"`
+	IsActive sql.NullBool   `json:"is_active"`
+}
+
+type ScammerCall struct {
+	ScammerID sql.NullString `json:"scammer_id"`
+	CallID    sql.NullString `json:"call_id"`
+}
+
+type ScammerMatching struct {
+	ScammerID  sql.NullString `json:"scammer_id"`
+	MatchingID sql.NullString `json:"matching_id"`
+}
+
+type ScammerTag struct {
+	ScammerID sql.NullString `json:"scammer_id"`
+	Tag       sql.NullString `json:"tag"`
 }

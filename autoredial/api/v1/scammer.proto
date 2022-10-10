@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/tk42/sqlc-buf-pg-template;apiv1";
+
+message Scammer {
+  int64 id = 1;
+  string name = 2;
+  string tel = 3;
+  repeated string tags = 4;
+  repeated string calls = 5;
+  bool is_active = 6;
+}
+
+message GetScammerRequest {
+  repeated string id = 1;
+}
+
+message GetScammerResponse {
+  repeated Scammer scammer = 1;
+}
+
+message PutScammerRequest {
+  int64 id = 1;
+  string name = 2;
+  string tel = 3;
+  repeated string tags = 4;
+  repeated string calls = 5;
+  bool is_active = 6;
+}
+
+message PutScammerResponse {
+  Scammer scammer = 1;
+}
+
+message DeleteScammerRequest {
+  repeated string id = 1;
+}
+
+message DeleteScammerResponse {}
+
+service ScammerStoreService {
+  rpc GetScammer(GetScammerRequest) returns (GetScammerResponse) {}
+  rpc PutScammer(PutScammerRequest) returns (PutScammerResponse) {}
+  rpc DeleteScammer(DeleteScammerRequest) returns (DeleteScammerResponse) {}
+}

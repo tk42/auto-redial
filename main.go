@@ -22,11 +22,18 @@ func main() {
 	}
 	defer client.Close()
 
-	svc := bufbuild.PetStoreServiceServer(client)
+	metric := bufbuild.MetricStoreServiceServer(client)
+	scammer := bufbuild.ScammerStoreServiceServer(client)
+	callhistory := bufbuild.CallHistoryStoreServiceServer(client)
+	matching := bufbuild.MatchingStoreServiceServer(client)
+
 	server := grpc.NewServer()
 
 	// reflection.Register(server) // Failed to list services: server does not support the reflection API
-	bufbuild.RegisterPetStoreServiceServer(server, svc)
+	bufbuild.RegisterMetricStoreServiceServer(server, metric)
+	bufbuild.RegisterMetricStoreServiceServer(server, scammer)
+	bufbuild.RegisterMetricStoreServiceServer(server, callhistory)
+	bufbuild.RegisterMetricStoreServiceServer(server, matching)
 
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {

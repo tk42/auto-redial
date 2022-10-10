@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/tk42/sqlc-buf-pg-template;apiv1";
+
+import "google/type/datetime.proto";
+import "google/protobuf/duration.proto";
+
+message Matching {
+  string id = 1;
+  google.type.DateTime created_at = 2;
+  int64 serial_number = 3;
+  repeated string scammer_id = 4;
+  repeated string call_id = 5;
+  bool matched = 6;
+  bool checked = 7;
+  optional google.type.DateTime matching_at = 8;
+  optional google.protobuf.Duration talk_time = 9;
+  optional string transcript = 10;
+}
+
+message GetMatchingQueueRequest {
+  string id = 1;
+}
+
+message GetMatchingQueueResponse {
+  repeated Matching matching = 1;
+}
+
+message PutMatchingQueueRequest {
+  string id = 1;
+  google.type.DateTime created_at = 2;
+  int64 serial_number = 3;
+  repeated string scammer_id = 4;
+  repeated string call_id = 5;
+  bool matched = 6;
+  bool checked = 7;
+  optional google.type.DateTime matching_at = 8;
+  optional google.protobuf.Duration talk_time = 9;
+  optional string transcript = 10;
+}
+
+message PutMatchingQueueResponse {
+  Matching matching = 1;
+}
+
+message DeleteMatchingQueueRequest {
+  string matching_id = 1;
+}
+
+message DeleteMatchingQueueResponse {}
+
+service MatchingQueueStoreService {
+  rpc GetMatchingQueue(GetMatchingQueueRequest) returns (GetMatchingQueueResponse) {}
+  rpc PutMatchingQueue(PutMatchingQueueRequest) returns (PutMatchingQueueResponse) {}
+  rpc DeleteMatchingQueue(DeleteMatchingQueueRequest) returns (DeleteMatchingQueueResponse) {}
+}
+
+
+message GetMatchingRequest {}
+
+message GetMatchingResponse {
+  repeated Matching matching = 1;
+}
+
+message PutMatchingRequest {
+  string id = 1;
+  google.type.DateTime created_at = 2;
+  int64 serial_number = 3;
+  repeated string scammer_id = 4;
+  repeated string call_id = 5;
+  bool matched = 6;
+  bool checked = 7;
+  optional google.type.DateTime matching_at = 8;
+  optional google.protobuf.Duration talk_time = 9;
+  optional string transcript = 10;
+}
+
+message PutMatchingResponse {
+  Matching matching = 1;
+}
+
+message DeleteMatchingRequest {
+  string matching_id = 1;
+}
+
+message DeleteMatchingResponse {}
+
+service MatchingStoreService {
+  rpc GetMatching(GetMatchingRequest) returns (GetMatchingResponse) {}
+  rpc PutMatching(PutMatchingRequest) returns (PutMatchingResponse) {}
+  rpc DeleteMatching(DeleteMatchingRequest) returns (DeleteMatchingResponse) {}
+}

@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/tk42/sqlc-buf-pg-template;apiv1";
+
+import "google/type/datetime.proto";
+import "google/protobuf/duration.proto";
+
+message Metric {
+  google.type.DateTime created_at = 1;
+  int64 calls = 2;
+  int64 scammers = 3;
+  int64 inactives = 4;
+  google.protobuf.Duration call_time = 5;
+  google.protobuf.Duration talk_time = 6;
+  int64 amount = 7;
+}
+
+message GetMetricRequest {
+  google.type.DateTime from = 1;
+  google.type.DateTime to = 2;
+}
+
+message GetMetricResponse {
+  repeated Metric metrics = 1;
+}
+
+message PutMetricRequest {
+  google.type.DateTime created_at = 1;
+  int64 calls = 2;
+  int64 scammers = 3;
+  int64 inactives = 4;
+  google.protobuf.Duration call_time = 5;
+  google.protobuf.Duration talk_time = 6;
+  int64 amount = 7;
+}
+
+message PutMetricResponse {
+  Metric metric = 1;
+}
+
+message DeleteMetricRequest {
+  google.type.DateTime from = 1;
+  google.type.DateTime to = 2;
+}
+
+message DeleteMetricResponse {}
+
+service MetricStoreService {
+  rpc GetMetric(GetMetricRequest) returns (GetMetricResponse) {}
+  rpc PutMetric(PutMetricRequest) returns (PutMetricResponse) {}
+  rpc DeleteMetric(DeleteMetricRequest) returns (DeleteMetricResponse) {}
+}

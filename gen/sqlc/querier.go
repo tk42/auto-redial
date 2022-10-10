@@ -2,17 +2,43 @@
 // versions:
 //   sqlc v1.13.0
 
-package pet
+package api
 
 import (
 	"context"
+	"database/sql"
 )
 
 type Querier interface {
-	CreateAuthor(ctx context.Context, arg CreateAuthorParams) (Author, error)
-	DeleteAuthor(ctx context.Context, id int64) error
-	GetAuthor(ctx context.Context, id int64) (Author, error)
-	ListAuthors(ctx context.Context) ([]Author, error)
+	CreateCallHistory(ctx context.Context, arg CreateCallHistoryParams) (Callhistory, error)
+	CreateMatching(ctx context.Context, arg CreateMatchingParams) (Matching, error)
+	CreateMetric(ctx context.Context, arg CreateMetricParams) (Metric, error)
+	CreateScammer(ctx context.Context, arg CreateScammerParams) (Scammer, error)
+	CreateScammerCall(ctx context.Context, arg CreateScammerCallParams) (ScammerCall, error)
+	CreateScammerMatching(ctx context.Context, arg CreateScammerMatchingParams) (ScammerMatching, error)
+	CreateScammerTag(ctx context.Context, arg CreateScammerTagParams) (ScammerTag, error)
+	DeleteCallHistory(ctx context.Context, id string) error
+	DeleteMatching(ctx context.Context, id string) error
+	DeleteMetric(ctx context.Context, arg DeleteMetricParams) error
+	DeleteScammer(ctx context.Context, id string) error
+	DeleteScammerCall(ctx context.Context, arg DeleteScammerCallParams) error
+	DeleteScammerMatching(ctx context.Context, arg DeleteScammerMatchingParams) error
+	DeleteScammerTag(ctx context.Context, arg DeleteScammerTagParams) error
+	GetCallHistory(ctx context.Context, id string) (Callhistory, error)
+	GetScammer(ctx context.Context, id string) (Scammer, error)
+	ListCallHistoryByScammerId(ctx context.Context, scammerID sql.NullString) ([]Callhistory, error)
+	ListMatching(ctx context.Context, id string) ([]Matching, error)
+	ListMetric(ctx context.Context, arg ListMetricParams) ([]Metric, error)
+	ListScammerCallByCallId(ctx context.Context, callID sql.NullString) ([]ScammerCall, error)
+	ListScammerCallByScammerId(ctx context.Context, scammerID sql.NullString) ([]ScammerCall, error)
+	ListScammerMatchingByMatchingId(ctx context.Context, matchingID sql.NullString) ([]ScammerMatching, error)
+	ListScammerMatchingByScammerId(ctx context.Context, scammerID sql.NullString) ([]ScammerMatching, error)
+	ListScammerTag(ctx context.Context, scammerID sql.NullString) ([]ScammerTag, error)
+	UpdateCallHistory(ctx context.Context, arg UpdateCallHistoryParams) error
+	UpdateMatching(ctx context.Context, arg UpdateMatchingParams) error
+	UpdateMetric(ctx context.Context, arg UpdateMetricParams) error
+	UpdateScammer(ctx context.Context, arg UpdateScammerParams) error
+	UpdateScammerTag(ctx context.Context, arg UpdateScammerTagParams) error
 }
 
 var _ Querier = (*Queries)(nil)

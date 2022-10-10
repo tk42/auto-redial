@@ -5,7 +5,7 @@ services:
     volumes:
       - ".:/workspace"
     working_dir: "/workspace"
-    command: ["generate", "petapis"]
+    command: ["generate", "autoredial"]
 
   sqlc:
     image: kjconroy/sqlc
