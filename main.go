@@ -7,10 +7,11 @@ import (
 	"net"
 
 	bufbuild "github.com/tk42/auto-redial/gen/proto/golang/github.com/tk42/auto-redial"
+	"github.com/tk42/auto-redial/service"
 
-	_ "github.com/lib/pq"
+	_ "github.com/jackc/pgx/v4/stdlib"
 	"google.golang.org/grpc"
-	// "google.golang.org/grpc/reflection"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -22,18 +23,17 @@ func main() {
 	}
 	defer client.Close()
 
-	metric := bufbuild.MetricStoreServiceServer(client)
-	scammer := bufbuild.ScammerStoreServiceServer(client)
-	callhistory := bufbuild.CallHistoryStoreServiceServer(client)
-	matching := bufbuild.MatchingStoreServiceServer(client)
+	metric_svc := service.NewMetricServiceServer(client)
+	scammer_svc := service.NewScammerServiceServer(client)
+	callhistory_svc := service.NewCallHistoryServiceServer(client)
+	matching_svc := service.NewMatchingServiceServer(client)
 
 	server := grpc.NewServer()
-
-	// reflection.Register(server) // Failed to list services: server does not support the reflection API
-	bufbuild.RegisterMetricStoreServiceServer(server, metric)
-	bufbuild.RegisterMetricStoreServiceServer(server, scammer)
-	bufbuild.RegisterMetricStoreServiceServer(server, callhistory)
-	bufbuild.RegisterMetricStoreServiceServer(server, matching)
+	reflection.Register(server) // Failed to list services: server does not support the reflection API
+	bufbuild.RegisterMetricStoreServiceServer(server, metric_svc)
+	bufbuild.RegisterScammerStoreServiceServer(server, scammer_svc)
+	bufbuild.RegisterCallHistoryStoreServiceServer(server, callhistory_svc)
+	bufbuild.RegisterMatchingStoreServiceServer(server, matching_svc)
 
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {

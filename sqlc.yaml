@@ -1,13 +1,15 @@
-version: 1
-packages:
-  - path: "gen/sqlc"
-    name: "api"
-    engine: "postgresql"
-    schema: "autoredial/schema.sql"
-    queries: "autoredial/query.sql"
+version: 2
+sql:
+  - engine: "postgresql"
+    schema: "autoredial/schema/schema.sql"
+    queries: "autoredial/query/query.sql"
+    gen:
+      go:
+        package: "autoredial"
+        out: "gen/sqlc"
 
-    emit_json_tags: true
-    emit_prepared_queries: false
-    emit_interface: true
-    emit_exact_table_names: false
-    emit_empty_slices: true
+    # emit_json_tags: true
+    # emit_prepared_queries: false
+    # emit_interface: true
+    # emit_exact_table_names: false
+    # emit_empty_slices: true

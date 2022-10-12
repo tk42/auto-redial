@@ -25,7 +25,7 @@ WHERE id = $1;
 
 -- name: DeleteMetric :exec
 DELETE FROM metric
-WHERE created_at BETWEEN $1 AND $2;
+WHERE created_at = $1;
 
 
 -- name: GetScammer :one

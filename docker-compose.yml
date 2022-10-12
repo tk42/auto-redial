@@ -31,9 +31,8 @@ services:
   db:
     image: 'postgres:latest'
     restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=e8a48653851e28c69d0506508fb27fc5
+    env_file:
+      - .env.local
     ports:
       - 5432:5432
     volumes:
