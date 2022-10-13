@@ -25,7 +25,7 @@ WHERE id = $1;
 
 -- name: DeleteMetric :exec
 DELETE FROM metric
-WHERE created_at = $1;
+WHERE created_at BETWEEN $1 AND $2;
 
 
 -- name: GetScammer :one
@@ -85,7 +85,7 @@ WHERE id = $1;
 
 
 
--- name: ListMatching :many
+-- name: GetMatching :one
 SELECT * FROM matching
 WHERE id = $1;
 
@@ -176,3 +176,8 @@ RETURNING *;
 -- name: DeleteScammerCall :exec
 DELETE FROM scammer_call
 WHERE scammer_id = $1 AND call_id = $2;
+
+
+-- name: ListMatchingTag :many
+SELECT * FROM matching_tag
+WHERE matching_id = $1;

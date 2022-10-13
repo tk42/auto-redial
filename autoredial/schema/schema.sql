@@ -63,6 +63,16 @@ ALTER SEQUENCE public.matching_serial_number_seq OWNED BY public.matching.serial
 
 
 --
+-- Name: matching_tag; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.matching_tag (
+    matching_id character varying(255) NOT NULL,
+    tag character varying(255) NOT NULL
+);
+
+
+--
 -- Name: metric; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -182,6 +192,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.callhistory
     ADD CONSTRAINT callhistory_scammer_id_fkey FOREIGN KEY (scammer_id) REFERENCES public.scammer(id);
+
+
+--
+-- Name: matching_tag matching_tag_matching_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.matching_tag
+    ADD CONSTRAINT matching_tag_matching_id_fkey FOREIGN KEY (matching_id) REFERENCES public.matching(id);
 
 
 --

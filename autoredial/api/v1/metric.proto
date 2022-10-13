@@ -41,7 +41,8 @@ message PutMetricResponse {
 }
 
 message DeleteMetricRequest {
-  google.type.DateTime created_at = 1;
+  google.type.DateTime from = 1;
+  google.type.DateTime to = 2;
 }
 
 message DeleteMetricResponse {}

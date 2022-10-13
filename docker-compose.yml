@@ -2,11 +2,9 @@ version: '3'
 
 services:
   server:
-    image: 'golang:latest'
-    volumes:
-      - ".:/home"
-    working_dir: "/home"
-    command: ["go", "run", "main.go"]
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 50051:50051
     depends_on:
@@ -49,6 +47,7 @@ services:
     # volumes:
     #   - ./tool:/home
     # command: ["sh", "-c", "/home/wait-for-it.sh server:50051 -- /usr/bin/pgweb --bind=0.0.0.0 --listen=8081"]
+    command: ["sh", "-c", "sleep 10; /usr/bin/pgweb --bind=0.0.0.0 --listen=8081"]
 
   grafana:
     image: 'grafana/grafana:latest'

@@ -13,11 +13,12 @@ message CallHistory {
   google.type.DateTime call_at = 3;
   google.protobuf.Duration call_time = 4;
   bool result = 5;
-  optional google.protobuf.Duration talk_time = 6;
+  repeated string tags = 6;
+  optional google.protobuf.Duration talk_time = 7;
 }
 
 message GetCallHistoryRequest {
-  string id = 1;
+  repeated string id = 1;
 }
 
 message GetCallHistoryResponse {
@@ -30,7 +31,8 @@ message PutCallHistoryRequest {
   google.type.DateTime call_at = 3;
   google.protobuf.Duration call_time = 4;
   bool result = 5;
-  optional google.protobuf.Duration talk_time = 6;
+  repeated string tags = 6;
+  optional google.protobuf.Duration talk_time = 7;
 }
 
 message PutCallHistoryResponse {

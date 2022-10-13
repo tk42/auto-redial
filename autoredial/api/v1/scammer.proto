@@ -5,7 +5,7 @@ package api.v1;
 option go_package = "github.com/tk42/auto-redial;apiv1";
 
 message Scammer {
-  int64 id = 1;
+  string id = 1;
   string name = 2;
   string tel = 3;
   repeated string tags = 4;
@@ -22,7 +22,7 @@ message GetScammerResponse {
 }
 
 message PutScammerRequest {
-  int64 id = 1;
+  string id = 1;
   string name = 2;
   string tel = 3;
   repeated string tags = 4;

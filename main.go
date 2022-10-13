@@ -10,6 +10,7 @@ import (
 	"github.com/tk42/auto-redial/service"
 
 	_ "github.com/jackc/pgx/v4/stdlib"
+	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

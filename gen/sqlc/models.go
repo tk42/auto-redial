@@ -29,6 +29,11 @@ type Matching struct {
 	Transcript   sql.NullString
 }
 
+type MatchingTag struct {
+	MatchingID string
+	Tag        string
+}
+
 type Metric struct {
 	ID        string
 	CreatedAt time.Time

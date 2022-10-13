@@ -21,7 +21,6 @@ message Matching {
 }
 
 message GetMatchingQueueRequest {
-  string id = 1;
 }
 
 message GetMatchingQueueResponse {
@@ -58,10 +57,12 @@ service MatchingQueueStoreService {
 }
 
 
-message GetMatchingRequest {}
+message GetMatchingRequest {
+  string id = 1;
+}
 
 message GetMatchingResponse {
-  repeated Matching matching = 1;
+  Matching matching = 1;
 }
 
 message PutMatchingRequest {

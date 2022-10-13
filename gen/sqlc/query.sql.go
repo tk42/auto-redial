@@ -258,11 +258,16 @@ func (q *Queries) DeleteMatching(ctx context.Context, id string) error {
 
 const deleteMetric = `-- name: DeleteMetric :exec
 DELETE FROM metric
-WHERE created_at = $1
+WHERE created_at BETWEEN $1 AND $2
 `
 
-func (q *Queries) DeleteMetric(ctx context.Context, createdAt time.Time) error {
-	_, err := q.db.ExecContext(ctx, deleteMetric, createdAt)
+type DeleteMetricParams struct {
+	CreatedAt   time.Time
+	CreatedAt_2 time.Time
+}
+
+func (q *Queries) DeleteMetric(ctx context.Context, arg DeleteMetricParams) error {
+	_, err := q.db.ExecContext(ctx, deleteMetric, arg.CreatedAt, arg.CreatedAt_2)
 	return err
 }
 
@@ -340,6 +345,27 @@ func (q *Queries) GetCallHistory(ctx context.Context, id string) (Callhistory, e
 	return i, err
 }
 
+const getMatching = `-- name: GetMatching :one
+SELECT id, created_at, serial_number, matched, checked, matching_at, talk_time, transcript FROM matching
+WHERE id = $1
+`
+
+func (q *Queries) GetMatching(ctx context.Context, id string) (Matching, error) {
+	row := q.db.QueryRowContext(ctx, getMatching, id)
+	var i Matching
+	err := row.Scan(
+		&i.ID,
+		&i.CreatedAt,
+		&i.SerialNumber,
+		&i.Matched,
+		&i.Checked,
+		&i.MatchingAt,
+		&i.TalkTime,
+		&i.Transcript,
+	)
+	return i, err
+}
+
 const getScammer = `-- name: GetScammer :one
 SELECT id, name, tel, is_active FROM scammer
 WHERE id = $1
@@ -392,30 +418,21 @@ func (q *Queries) ListCallHistoryByScammerId(ctx context.Context, scammerID stri
 	return items, nil
 }
 
-const listMatching = `-- name: ListMatching :many
-SELECT id, created_at, serial_number, matched, checked, matching_at, talk_time, transcript FROM matching
-WHERE id = $1
+const listMatchingTag = `-- name: ListMatchingTag :many
+SELECT matching_id, tag FROM matching_tag
+WHERE matching_id = $1
 `
 
-func (q *Queries) ListMatching(ctx context.Context, id string) ([]Matching, error) {
-	rows, err := q.db.QueryContext(ctx, listMatching, id)
+func (q *Queries) ListMatchingTag(ctx context.Context, matchingID string) ([]MatchingTag, error) {
+	rows, err := q.db.QueryContext(ctx, listMatchingTag, matchingID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Matching
+	var items []MatchingTag
 	for rows.Next() {
-		var i Matching
-		if err := rows.Scan(
-			&i.ID,
-			&i.CreatedAt,
-			&i.SerialNumber,
-			&i.Matched,
-			&i.Checked,
-			&i.MatchingAt,
-			&i.TalkTime,
-			&i.Transcript,
-		); err != nil {
+		var i MatchingTag
+		if err := rows.Scan(&i.MatchingID, &i.Tag); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
