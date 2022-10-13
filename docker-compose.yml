@@ -52,7 +52,8 @@ services:
   grafana:
     image: 'grafana/grafana:latest'
     volumes:
-      - "./grafana/grafana.ini:/var/lib/grafana/grafana.ini"
+      - "./grafana/config:/var/lib/grafana"
+      - "./grafana/datasources:/etc/grafana/provisioning/datasources"
     depends_on:
       - db
     ports:
