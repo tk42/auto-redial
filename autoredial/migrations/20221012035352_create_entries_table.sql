@@ -1,6 +1,6 @@
 -- migrate:up
 CREATE TABLE metric (
-  id VARCHAR(255) PRIMARY KEY,
+  id              VARCHAR(255) PRIMARY KEY,
   created_at      DATE NOT NULL,
   calls           BIGINT NOT NULL,
   scammers        BIGINT NOT NULL,
@@ -11,9 +11,9 @@ CREATE TABLE metric (
 );
 
 CREATE TABLE scammer (
-  id VARCHAR(255)   PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  tel VARCHAR(255)  NOT NULL,
+  tel               VARCHAR(255) PRIMARY KEY NOT NULL,
+  id                VARCHAR(255) NOT NULL,
+  name              VARCHAR(255) NOT NULL,
   is_active         BOOLEAN NOT NULL
 );
 
@@ -27,7 +27,7 @@ CREATE TABLE callhistory (
 );
 
 CREATE TABLE matching (
-  id VARCHAR(255) PRIMARY KEY,
+  id              VARCHAR(255) PRIMARY KEY,
   created_at      DATE NOT NULL,
   serial_number   BIGSERIAL NOT NULL,
   matched         BOOLEAN NOT NULL,
