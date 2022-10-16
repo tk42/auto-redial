@@ -13,9 +13,9 @@ type Callhistory struct {
 	ID        string
 	ScammerID string
 	CallAt    time.Time
-	CallTime  int64
+	CallSec   int64
 	Result    bool
-	TalkTime  sql.NullInt64
+	TalkSec   sql.NullInt64
 }
 
 type Matching struct {
@@ -25,7 +25,7 @@ type Matching struct {
 	Matched      bool
 	Checked      bool
 	MatchingAt   sql.NullTime
-	TalkTime     sql.NullInt64
+	TalkSec      sql.NullInt64
 	Transcript   sql.NullString
 }
 
@@ -40,8 +40,8 @@ type Metric struct {
 	Calls     int64
 	Scammers  int64
 	Inactives int64
-	CallTime  int64
-	TalkTime  int64
+	CallSec   int64
+	TalkSec   int64
 	Amount    int64
 }
 

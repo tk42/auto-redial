@@ -9,16 +9,17 @@ import (
 	bufbuild "github.com/tk42/auto-redial/gen/proto/golang/github.com/tk42/auto-redial"
 	"github.com/tk42/auto-redial/service"
 
-	_ "github.com/jackc/pgx/v4/stdlib"
-	_ "github.com/lib/pq"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
 
 func main() {
 	log.Print("server is starting...")
-	client, err := sql.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
-		"db", "5432", "postgres", "postgres", "e8a48653851e28c69d0506508fb27fc5"))
+	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&TimeZone=Asia/Tokyo",
+		"postgres", "e8a48653851e28c69d0506508fb27fc5", "db", "5432", "postgres",
+	)
+	client, err := sql.Open("pgx", dsn)
 	if err != nil {
 		log.Fatalf("failed to connect to db: %s", err)
 	}

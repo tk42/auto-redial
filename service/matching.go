@@ -27,8 +27,8 @@ func (s ServiceServer) PutMatching(ctx context.Context, req *bufbuild.PutMatchin
 			Time:  ConvertDatetime2Time(req.MatchingAt),
 			Valid: req.MatchingAt != nil,
 		},
-		TalkTime: sql.NullInt64{
-			Int64: int64(req.TalkTime.AsDuration().Seconds()),
+		TalkSec: sql.NullInt64{
+			Int64: req.GetTalkTime().GetSeconds(),
 			Valid: req.TalkTime != nil,
 		},
 		Transcript: sql.NullString{
@@ -58,7 +58,7 @@ func (s ServiceServer) PutMatching(ctx context.Context, req *bufbuild.PutMatchin
 			Checked:      matching.Checked,
 			MatchingAt:   ConvertTime2Datetime(matching.MatchingAt.Time),
 			TalkTime: &durationpb.Duration{
-				Seconds: matching.TalkTime.Int64,
+				Seconds: matching.TalkSec.Int64,
 			},
 			Transcript: &matching.Transcript.String,
 		},
@@ -98,7 +98,7 @@ func (s ServiceServer) GetMatching(ctx context.Context, req *bufbuild.GetMatchin
 			Checked:      matching.Checked,
 			MatchingAt:   ConvertTime2Datetime(matching.MatchingAt.Time),
 			TalkTime: &durationpb.Duration{
-				Seconds: matching.TalkTime.Int64,
+				Seconds: matching.TalkSec.Int64,
 			},
 			Transcript: &matching.Transcript.String,
 		},

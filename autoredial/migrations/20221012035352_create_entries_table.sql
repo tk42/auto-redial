@@ -5,8 +5,8 @@ CREATE TABLE metric (
   calls           BIGINT NOT NULL,
   scammers        BIGINT NOT NULL,
   inactives       BIGINT NOT NULL,
-  call_time       INTERVAL NOT NULL,
-  talk_time       INTERVAL NOT NULL,
+  call_sec        BIGINT NOT NULL,
+  talk_sec        BIGINT NOT NULL,
   amount          BIGINT NOT NULL
 );
 
@@ -21,9 +21,9 @@ CREATE TABLE callhistory (
   id VARCHAR(255) PRIMARY KEY,
   scammer_id      VARCHAR(255) REFERENCES scammer(id) NOT NULL,
   call_at         DATE NOT NULL,
-  call_time       INTERVAL NOT NULL,
+  call_sec        BIGINT NOT NULL,
   result          BOOLEAN NOT NULL,
-  talk_time       INTERVAL
+  talk_sec        BIGINT
 );
 
 CREATE TABLE matching (
@@ -33,7 +33,7 @@ CREATE TABLE matching (
   matched         BOOLEAN NOT NULL,
   checked         BOOLEAN NOT NULL,
   matching_at     DATE,
-  talk_time       INTERVAL,
+  talk_sec        BIGINT,
   transcript      TEXT
 );
 

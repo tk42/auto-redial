@@ -13,20 +13,20 @@ import (
 
 const createCallHistory = `-- name: CreateCallHistory :one
 INSERT INTO callhistory (
-  id, scammer_id, call_at, call_time, result, talk_time
+  id, scammer_id, call_at, call_sec, result, talk_sec
 ) VALUES (
   $1, $2, $3, $4, $5, $6
 )
-RETURNING id, scammer_id, call_at, call_time, result, talk_time
+RETURNING id, scammer_id, call_at, call_sec, result, talk_sec
 `
 
 type CreateCallHistoryParams struct {
 	ID        string
 	ScammerID string
 	CallAt    time.Time
-	CallTime  int64
+	CallSec   int64
 	Result    bool
-	TalkTime  sql.NullInt64
+	TalkSec   sql.NullInt64
 }
 
 func (q *Queries) CreateCallHistory(ctx context.Context, arg CreateCallHistoryParams) (Callhistory, error) {
@@ -34,29 +34,29 @@ func (q *Queries) CreateCallHistory(ctx context.Context, arg CreateCallHistoryPa
 		arg.ID,
 		arg.ScammerID,
 		arg.CallAt,
-		arg.CallTime,
+		arg.CallSec,
 		arg.Result,
-		arg.TalkTime,
+		arg.TalkSec,
 	)
 	var i Callhistory
 	err := row.Scan(
 		&i.ID,
 		&i.ScammerID,
 		&i.CallAt,
-		&i.CallTime,
+		&i.CallSec,
 		&i.Result,
-		&i.TalkTime,
+		&i.TalkSec,
 	)
 	return i, err
 }
 
 const createMatching = `-- name: CreateMatching :one
 INSERT INTO matching (
-  id, created_at, serial_number, matched, checked, matching_at, talk_time, transcript
+  id, created_at, serial_number, matched, checked, matching_at, talk_sec, transcript
 ) VALUES (
   $1, $2, $3, $4, $5, $6, $7, $8
 )
-RETURNING id, created_at, serial_number, matched, checked, matching_at, talk_time, transcript
+RETURNING id, created_at, serial_number, matched, checked, matching_at, talk_sec, transcript
 `
 
 type CreateMatchingParams struct {
@@ -66,7 +66,7 @@ type CreateMatchingParams struct {
 	Matched      bool
 	Checked      bool
 	MatchingAt   sql.NullTime
-	TalkTime     sql.NullInt64
+	TalkSec      sql.NullInt64
 	Transcript   sql.NullString
 }
 
@@ -78,7 +78,7 @@ func (q *Queries) CreateMatching(ctx context.Context, arg CreateMatchingParams) 
 		arg.Matched,
 		arg.Checked,
 		arg.MatchingAt,
-		arg.TalkTime,
+		arg.TalkSec,
 		arg.Transcript,
 	)
 	var i Matching
@@ -89,7 +89,7 @@ func (q *Queries) CreateMatching(ctx context.Context, arg CreateMatchingParams) 
 		&i.Matched,
 		&i.Checked,
 		&i.MatchingAt,
-		&i.TalkTime,
+		&i.TalkSec,
 		&i.Transcript,
 	)
 	return i, err
@@ -97,11 +97,11 @@ func (q *Queries) CreateMatching(ctx context.Context, arg CreateMatchingParams) 
 
 const createMetric = `-- name: CreateMetric :one
 INSERT INTO metric (
-  id, created_at, calls, scammers, inactives, call_time, talk_time, amount
+  id, created_at, calls, scammers, inactives, call_sec, talk_sec, amount
 ) VALUES (
   $1, $2, $3, $4, $5, $6, $7, $8
 )
-RETURNING id, created_at, calls, scammers, inactives, call_time, talk_time, amount
+RETURNING id, created_at, calls, scammers, inactives, call_sec, talk_sec, amount
 `
 
 type CreateMetricParams struct {
@@ -110,8 +110,8 @@ type CreateMetricParams struct {
 	Calls     int64
 	Scammers  int64
 	Inactives int64
-	CallTime  int64
-	TalkTime  int64
+	CallSec   int64
+	TalkSec   int64
 	Amount    int64
 }
 
@@ -122,8 +122,8 @@ func (q *Queries) CreateMetric(ctx context.Context, arg CreateMetricParams) (Met
 		arg.Calls,
 		arg.Scammers,
 		arg.Inactives,
-		arg.CallTime,
-		arg.TalkTime,
+		arg.CallSec,
+		arg.TalkSec,
 		arg.Amount,
 	)
 	var i Metric
@@ -133,8 +133,8 @@ func (q *Queries) CreateMetric(ctx context.Context, arg CreateMetricParams) (Met
 		&i.Calls,
 		&i.Scammers,
 		&i.Inactives,
-		&i.CallTime,
-		&i.TalkTime,
+		&i.CallSec,
+		&i.TalkSec,
 		&i.Amount,
 	)
 	return i, err
@@ -327,7 +327,7 @@ func (q *Queries) DeleteScammerTag(ctx context.Context, arg DeleteScammerTagPara
 }
 
 const getCallHistory = `-- name: GetCallHistory :one
-SELECT id, scammer_id, call_at, call_time, result, talk_time FROM callhistory
+SELECT id, scammer_id, call_at, call_sec, result, talk_sec FROM callhistory
 WHERE id = $1
 `
 
@@ -338,15 +338,15 @@ func (q *Queries) GetCallHistory(ctx context.Context, id string) (Callhistory, e
 		&i.ID,
 		&i.ScammerID,
 		&i.CallAt,
-		&i.CallTime,
+		&i.CallSec,
 		&i.Result,
-		&i.TalkTime,
+		&i.TalkSec,
 	)
 	return i, err
 }
 
 const getMatching = `-- name: GetMatching :one
-SELECT id, created_at, serial_number, matched, checked, matching_at, talk_time, transcript FROM matching
+SELECT id, created_at, serial_number, matched, checked, matching_at, talk_sec, transcript FROM matching
 WHERE id = $1
 `
 
@@ -360,7 +360,7 @@ func (q *Queries) GetMatching(ctx context.Context, id string) (Matching, error) 
 		&i.Matched,
 		&i.Checked,
 		&i.MatchingAt,
-		&i.TalkTime,
+		&i.TalkSec,
 		&i.Transcript,
 	)
 	return i, err
@@ -384,7 +384,7 @@ func (q *Queries) GetScammer(ctx context.Context, id string) (Scammer, error) {
 }
 
 const listCallHistoryByScammerId = `-- name: ListCallHistoryByScammerId :many
-SELECT id, scammer_id, call_at, call_time, result, talk_time FROM callhistory
+SELECT id, scammer_id, call_at, call_sec, result, talk_sec FROM callhistory
 WHERE scammer_id = $1
 `
 
@@ -401,9 +401,9 @@ func (q *Queries) ListCallHistoryByScammerId(ctx context.Context, scammerID stri
 			&i.ID,
 			&i.ScammerID,
 			&i.CallAt,
-			&i.CallTime,
+			&i.CallSec,
 			&i.Result,
-			&i.TalkTime,
+			&i.TalkSec,
 		); err != nil {
 			return nil, err
 		}
@@ -447,7 +447,7 @@ func (q *Queries) ListMatchingTag(ctx context.Context, matchingID string) ([]Mat
 }
 
 const listMetric = `-- name: ListMetric :many
-SELECT id, created_at, calls, scammers, inactives, call_time, talk_time, amount FROM metric
+SELECT id, created_at, calls, scammers, inactives, call_sec, talk_sec, amount FROM metric
 WHERE created_at BETWEEN $1 AND $2
 ORDER BY created_at DESC
 `
@@ -472,8 +472,8 @@ func (q *Queries) ListMetric(ctx context.Context, arg ListMetricParams) ([]Metri
 			&i.Calls,
 			&i.Scammers,
 			&i.Inactives,
-			&i.CallTime,
-			&i.TalkTime,
+			&i.CallSec,
+			&i.TalkSec,
 			&i.Amount,
 		); err != nil {
 			return nil, err
@@ -634,9 +634,9 @@ UPDATE callhistory
 SET
   scammer_id = $2,
   call_at = $3,
-  call_time = $4,
+  call_sec = $4,
   result = $5,
-  talk_time = $6
+  talk_sec = $6
 WHERE id = $1
 `
 
@@ -644,9 +644,9 @@ type UpdateCallHistoryParams struct {
 	ID        string
 	ScammerID string
 	CallAt    time.Time
-	CallTime  int64
+	CallSec   int64
 	Result    bool
-	TalkTime  sql.NullInt64
+	TalkSec   sql.NullInt64
 }
 
 func (q *Queries) UpdateCallHistory(ctx context.Context, arg UpdateCallHistoryParams) error {
@@ -654,9 +654,9 @@ func (q *Queries) UpdateCallHistory(ctx context.Context, arg UpdateCallHistoryPa
 		arg.ID,
 		arg.ScammerID,
 		arg.CallAt,
-		arg.CallTime,
+		arg.CallSec,
 		arg.Result,
-		arg.TalkTime,
+		arg.TalkSec,
 	)
 	return err
 }
@@ -669,7 +669,7 @@ SET
   matched = $4,
   checked = $5,
   matching_at = $6,
-  talk_time = $7,
+  talk_sec = $7,
   transcript = $8
 WHERE id = $1
 `
@@ -681,7 +681,7 @@ type UpdateMatchingParams struct {
 	Matched      bool
 	Checked      bool
 	MatchingAt   sql.NullTime
-	TalkTime     sql.NullInt64
+	TalkSec      sql.NullInt64
 	Transcript   sql.NullString
 }
 
@@ -693,7 +693,7 @@ func (q *Queries) UpdateMatching(ctx context.Context, arg UpdateMatchingParams) 
 		arg.Matched,
 		arg.Checked,
 		arg.MatchingAt,
-		arg.TalkTime,
+		arg.TalkSec,
 		arg.Transcript,
 	)
 	return err
@@ -706,8 +706,8 @@ SET
   calls = $3,
   scammers = $4,
   inactives = $5,
-  call_time = $6,
-  talk_time = $7,
+  call_sec = $6,
+  talk_sec = $7,
   amount = $8
 WHERE id = $1
 `
@@ -718,8 +718,8 @@ type UpdateMetricParams struct {
 	Calls     int64
 	Scammers  int64
 	Inactives int64
-	CallTime  int64
-	TalkTime  int64
+	CallSec   int64
+	TalkSec   int64
 	Amount    int64
 }
 
@@ -730,8 +730,8 @@ func (q *Queries) UpdateMetric(ctx context.Context, arg UpdateMetricParams) erro
 		arg.Calls,
 		arg.Scammers,
 		arg.Inactives,
-		arg.CallTime,
-		arg.TalkTime,
+		arg.CallSec,
+		arg.TalkSec,
 		arg.Amount,
 	)
 	return err

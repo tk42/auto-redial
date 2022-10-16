@@ -5,7 +5,7 @@ ORDER BY created_at DESC;
 
 -- name: CreateMetric :one
 INSERT INTO metric (
-  id, created_at, calls, scammers, inactives, call_time, talk_time, amount
+  id, created_at, calls, scammers, inactives, call_sec, talk_sec, amount
 ) VALUES (
   $1, $2, $3, $4, $5, $6, $7, $8
 )
@@ -18,8 +18,8 @@ SET
   calls = $3,
   scammers = $4,
   inactives = $5,
-  call_time = $6,
-  talk_time = $7,
+  call_sec = $6,
+  talk_sec = $7,
   amount = $8
 WHERE id = $1;
 
@@ -63,7 +63,7 @@ WHERE scammer_id = $1;
 
 -- name: CreateCallHistory :one
 INSERT INTO callhistory (
-  id, scammer_id, call_at, call_time, result, talk_time
+  id, scammer_id, call_at, call_sec, result, talk_sec
 ) VALUES (
   $1, $2, $3, $4, $5, $6
 )
@@ -74,9 +74,9 @@ UPDATE callhistory
 SET
   scammer_id = $2,
   call_at = $3,
-  call_time = $4,
+  call_sec = $4,
   result = $5,
-  talk_time = $6
+  talk_sec = $6
 WHERE id = $1;
 
 -- name: DeleteCallHistory :exec
@@ -91,7 +91,7 @@ WHERE id = $1;
 
 -- name: CreateMatching :one
 INSERT INTO matching (
-  id, created_at, serial_number, matched, checked, matching_at, talk_time, transcript
+  id, created_at, serial_number, matched, checked, matching_at, talk_sec, transcript
 ) VALUES (
   $1, $2, $3, $4, $5, $6, $7, $8
 )
@@ -105,7 +105,7 @@ SET
   matched = $4,
   checked = $5,
   matching_at = $6,
-  talk_time = $7,
+  talk_sec = $7,
   transcript = $8
 WHERE id = $1;
 

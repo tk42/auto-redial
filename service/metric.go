@@ -24,8 +24,8 @@ func (s ServiceServer) PutMetric(ctx context.Context, req *bufbuild.PutMetricReq
 		Calls:     req.Calls,
 		Scammers:  req.Scammers,
 		Inactives: req.Inactives,
-		CallTime:  int64(req.CallTime.AsDuration().Seconds()),
-		TalkTime:  int64(req.TalkTime.AsDuration().Seconds()),
+		CallSec:   req.GetCallTime().GetSeconds(),
+		TalkSec:   req.GetTalkTime().GetSeconds(),
 		Amount:    req.Amount,
 	})
 	if err != nil {
@@ -38,10 +38,10 @@ func (s ServiceServer) PutMetric(ctx context.Context, req *bufbuild.PutMetricReq
 			Scammers:  metric.Scammers,
 			Inactives: metric.Inactives,
 			CallTime: &durationpb.Duration{
-				Seconds: metric.CallTime,
+				Seconds: metric.CallSec,
 			},
 			TalkTime: &durationpb.Duration{
-				Seconds: metric.TalkTime,
+				Seconds: metric.TalkSec,
 			},
 			Amount: metric.Amount,
 		},
@@ -74,10 +74,10 @@ func (s ServiceServer) GetMetric(ctx context.Context, req *bufbuild.GetMetricReq
 			Scammers:  metric.Scammers,
 			Inactives: metric.Inactives,
 			CallTime: &durationpb.Duration{
-				Seconds: metric.CallTime,
+				Seconds: metric.CallSec,
 			},
 			TalkTime: &durationpb.Duration{
-				Seconds: metric.TalkTime,
+				Seconds: metric.TalkSec,
 			},
 			Amount: metric.Amount,
 		}

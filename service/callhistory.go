@@ -21,10 +21,10 @@ func (s ServiceServer) PutCallHistory(ctx context.Context, req *bufbuild.PutCall
 		ID:        req.Id,
 		ScammerID: req.ScammerId,
 		CallAt:    ConvertDatetime2Time(req.CallAt),
-		CallTime:  int64(req.CallTime.AsDuration().Seconds()),
+		CallSec:   req.GetCallTime().GetSeconds(),
 		Result:    req.Result,
-		TalkTime: sql.NullInt64{
-			Int64: int64(req.TalkTime.AsDuration().Seconds()),
+		TalkSec: sql.NullInt64{
+			Int64: req.GetTalkTime().GetSeconds(),
 			Valid: req.TalkTime != nil,
 		},
 	}
@@ -49,12 +49,12 @@ func (s ServiceServer) PutCallHistory(ctx context.Context, req *bufbuild.PutCall
 			ScammerId: call.ScammerID,
 			CallAt:    ConvertTime2Datetime(call.CallAt),
 			CallTime: &durationpb.Duration{
-				Seconds: call.CallTime,
+				Seconds: call.CallSec,
 			},
 			Result: call.Result,
 			Tags:   tags,
 			TalkTime: &durationpb.Duration{
-				Seconds: params.TalkTime.Int64,
+				Seconds: params.TalkSec.Int64,
 			},
 		},
 	}, nil
@@ -81,11 +81,11 @@ func (s ServiceServer) GetCallHistory(ctx context.Context, req *bufbuild.GetCall
 			ScammerId: call.ScammerID,
 			CallAt:    ConvertTime2Datetime(call.CallAt),
 			CallTime: &durationpb.Duration{
-				Seconds: call.CallTime,
+				Seconds: call.CallSec,
 			},
 			Result: call.Result,
 			TalkTime: &durationpb.Duration{
-				Seconds: call.TalkTime.Int64,
+				Seconds: call.TalkSec.Int64,
 			},
 		})
 	}

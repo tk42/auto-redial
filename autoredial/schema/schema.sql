@@ -21,9 +21,9 @@ CREATE TABLE public.callhistory (
     id character varying(255) NOT NULL,
     scammer_id character varying(255) NOT NULL,
     call_at date NOT NULL,
-    call_time interval NOT NULL,
+    call_sec bigint NOT NULL,
     result boolean NOT NULL,
-    talk_time interval
+    talk_sec bigint
 );
 
 
@@ -38,7 +38,7 @@ CREATE TABLE public.matching (
     matched boolean NOT NULL,
     checked boolean NOT NULL,
     matching_at date,
-    talk_time interval,
+    talk_sec bigint,
     transcript text
 );
 
@@ -82,8 +82,8 @@ CREATE TABLE public.metric (
     calls bigint NOT NULL,
     scammers bigint NOT NULL,
     inactives bigint NOT NULL,
-    call_time interval NOT NULL,
-    talk_time interval NOT NULL,
+    call_sec bigint NOT NULL,
+    talk_sec bigint NOT NULL,
     amount bigint NOT NULL
 );
 
