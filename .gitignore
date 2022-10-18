@@ -3,3 +3,5 @@ postgres-data
 
 grafana/config/*
 !grafana/config/grafana.ini
+
+.env
