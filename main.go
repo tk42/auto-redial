@@ -2,9 +2,9 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"net"
+	"os"
 
 	bufbuild "github.com/tk42/auto-redial/gen/proto/golang/github.com/tk42/auto-redial"
 	"github.com/tk42/auto-redial/service"
@@ -16,9 +16,10 @@ import (
 
 func main() {
 	log.Print("server is starting...")
-	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&TimeZone=Asia/Tokyo",
-		"postgres", "e8a48653851e28c69d0506508fb27fc5", "db", "5432", "postgres",
-	)
+	dsn := os.Getenv("DATABASE_URL")
+	// dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&TimeZone=Asia/Tokyo",
+	// 	"postgres", "e8a48653851e28c69d0506508fb27fc5", "db", "5432", "postgres",
+	// )
 	client, err := sql.Open("pgx", dsn)
 	if err != nil {
 		log.Fatalf("failed to connect to db: %s", err)
