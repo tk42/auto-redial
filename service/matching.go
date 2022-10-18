@@ -158,19 +158,23 @@ func (s ServiceServer) UpdateMatching(ctx context.Context, req *bufbuild.UpdateM
 	}
 
 	if req.Checked != nil {
-		s.db.UpdateMatchingChecked(ctx, sqlc.UpdateMatchingCheckedParams{
+		if err := s.db.UpdateMatchingChecked(ctx, sqlc.UpdateMatchingCheckedParams{
 			ID:      matching.Matching.Id,
 			Checked: *req.Checked,
-		})
+		}); err != nil {
+			return nil, err
+		}
 		matching.Matching.Checked = *req.Checked
 	} else if req.Transcript != nil {
-		s.db.UpdateMatchingTranscript(ctx, sqlc.UpdateMatchingTranscriptParams{
+		if err := s.db.UpdateMatchingTranscript(ctx, sqlc.UpdateMatchingTranscriptParams{
 			ID: matching.Matching.Id,
 			Transcript: sql.NullString{
 				String: *req.Transcript,
 				Valid:  true,
 			},
-		})
+		}); err != nil {
+			return nil, err
+		}
 	} else {
 		params := sqlc.UpdateMatchingMatchedParams{
 			ID: matching.Matching.Id,
@@ -194,7 +198,9 @@ func (s ServiceServer) UpdateMatching(ctx context.Context, req *bufbuild.UpdateM
 				Valid: true,
 			}
 		}
-		s.db.UpdateMatchingMatched(ctx, params)
+		if err := s.db.UpdateMatchingMatched(ctx, params); err != nil {
+			return nil, err
+		}
 	}
 
 	return &bufbuild.UpdateMatchingResponse{
