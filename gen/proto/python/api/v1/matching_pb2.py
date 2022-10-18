@@ -15,7 +15,7 @@ from google.type import datetime_pb2 as google_dot_type_dot_datetime__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15\x61pi/v1/matching.proto\x12\x06\x61pi.v1\x1a\x1agoogle/type/datetime.proto\x1a\x1egoogle/protobuf/duration.proto\"\xad\x03\n\x08Matching\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x34\n\ncreated_at\x18\x02 \x01(\x0b\x32\x15.google.type.DateTimeR\tcreatedAt\x12#\n\rserial_number\x18\x03 \x01(\x03R\x0cserialNumber\x12\x1d\n\nscammer_id\x18\x04 \x03(\tR\tscammerId\x12\x17\n\x07\x63\x61ll_id\x18\x05 \x03(\tR\x06\x63\x61llId\x12\x18\n\x07matched\x18\x06 \x01(\x08R\x07matched\x12\x18\n\x07\x63hecked\x18\x07 \x01(\x08R\x07\x63hecked\x12;\n\x0bmatching_at\x18\x08 \x01(\x0b\x32\x15.google.type.DateTimeH\x00R\nmatchingAt\x88\x01\x01\x12;\n\ttalk_time\x18\t \x01(\x0b\x32\x19.google.protobuf.DurationH\x01R\x08talkTime\x88\x01\x01\x12#\n\ntranscript\x18\n \x01(\tH\x02R\ntranscript\x88\x01\x01\x42\x0e\n\x0c_matching_atB\x0c\n\n_talk_timeB\r\n\x0b_transcript\"\x19\n\x17GetMatchingQueueRequest\"H\n\x18GetMatchingQueueResponse\x12,\n\x08matching\x18\x01 \x03(\x0b\x32\x10.api.v1.MatchingR\x08matching\"\xbc\x03\n\x17PutMatchingQueueRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x34\n\ncreated_at\x18\x02 \x01(\x0b\x32\x15.google.type.DateTimeR\tcreatedAt\x12#\n\rserial_number\x18\x03 \x01(\x03R\x0cserialNumber\x12\x1d\n\nscammer_id\x18\x04 \x03(\tR\tscammerId\x12\x17\n\x07\x63\x61ll_id\x18\x05 \x03(\tR\x06\x63\x61llId\x12\x18\n\x07matched\x18\x06 \x01(\x08R\x07matched\x12\x18\n\x07\x63hecked\x18\x07 \x01(\x08R\x07\x63hecked\x12;\n\x0bmatching_at\x18\x08 \x01(\x0b\x32\x15.google.type.DateTimeH\x00R\nmatchingAt\x88\x01\x01\x12;\n\ttalk_time\x18\t \x01(\x0b\x32\x19.google.protobuf.DurationH\x01R\x08talkTime\x88\x01\x01\x12#\n\ntranscript\x18\n \x01(\tH\x02R\ntranscript\x88\x01\x01\x42\x0e\n\x0c_matching_atB\x0c\n\n_talk_timeB\r\n\x0b_transcript\"H\n\x18PutMatchingQueueResponse\x12,\n\x08matching\x18\x01 \x01(\x0b\x32\x10.api.v1.MatchingR\x08matching\"=\n\x1a\x44\x65leteMatchingQueueRequest\x12\x1f\n\x0bmatching_id\x18\x01 \x01(\tR\nmatchingId\"\x1d\n\x1b\x44\x65leteMatchingQueueResponse\"$\n\x12GetMatchingRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"C\n\x13GetMatchingResponse\x12,\n\x08matching\x18\x01 \x01(\x0b\x32\x10.api.v1.MatchingR\x08matching\"\xb7\x03\n\x12PutMatchingRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x34\n\ncreated_at\x18\x02 \x01(\x0b\x32\x15.google.type.DateTimeR\tcreatedAt\x12#\n\rserial_number\x18\x03 \x01(\x03R\x0cserialNumber\x12\x1d\n\nscammer_id\x18\x04 \x03(\tR\tscammerId\x12\x17\n\x07\x63\x61ll_id\x18\x05 \x03(\tR\x06\x63\x61llId\x12\x18\n\x07matched\x18\x06 \x01(\x08R\x07matched\x12\x18\n\x07\x63hecked\x18\x07 \x01(\x08R\x07\x63hecked\x12;\n\x0bmatching_at\x18\x08 \x01(\x0b\x32\x15.google.type.DateTimeH\x00R\nmatchingAt\x88\x01\x01\x12;\n\ttalk_time\x18\t \x01(\x0b\x32\x19.google.protobuf.DurationH\x01R\x08talkTime\x88\x01\x01\x12#\n\ntranscript\x18\n \x01(\tH\x02R\ntranscript\x88\x01\x01\x42\x0e\n\x0c_matching_atB\x0c\n\n_talk_timeB\r\n\x0b_transcript\"C\n\x13PutMatchingResponse\x12,\n\x08matching\x18\x01 \x01(\x0b\x32\x10.api.v1.MatchingR\x08matching\"8\n\x15\x44\x65leteMatchingRequest\x12\x1f\n\x0bmatching_id\x18\x01 \x01(\tR\nmatchingId\"\x18\n\x16\x44\x65leteMatchingResponse2\xaf\x02\n\x19MatchingQueueStoreService\x12W\n\x10GetMatchingQueue\x12\x1f.api.v1.GetMatchingQueueRequest\x1a .api.v1.GetMatchingQueueResponse\"\x00\x12W\n\x10PutMatchingQueue\x12\x1f.api.v1.PutMatchingQueueRequest\x1a .api.v1.PutMatchingQueueResponse\"\x00\x12`\n\x13\x44\x65leteMatchingQueue\x12\".api.v1.DeleteMatchingQueueRequest\x1a#.api.v1.DeleteMatchingQueueResponse\"\x00\x32\xfd\x01\n\x14MatchingStoreService\x12H\n\x0bGetMatching\x12\x1a.api.v1.GetMatchingRequest\x1a\x1b.api.v1.GetMatchingResponse\"\x00\x12H\n\x0bPutMatching\x12\x1a.api.v1.PutMatchingRequest\x1a\x1b.api.v1.PutMatchingResponse\"\x00\x12Q\n\x0e\x44\x65leteMatching\x12\x1d.api.v1.DeleteMatchingRequest\x1a\x1e.api.v1.DeleteMatchingResponse\"\x00\x42#Z!github.com/tk42/auto-redial;apiv1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15\x61pi/v1/matching.proto\x12\x06\x61pi.v1\x1a\x1agoogle/type/datetime.proto\x1a\x1egoogle/protobuf/duration.proto\"\xad\x03\n\x08Matching\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x34\n\ncreated_at\x18\x02 \x01(\x0b\x32\x15.google.type.DateTimeR\tcreatedAt\x12#\n\rserial_number\x18\x03 \x01(\x03R\x0cserialNumber\x12\x1d\n\nscammer_id\x18\x04 \x03(\tR\tscammerId\x12\x17\n\x07\x63\x61ll_id\x18\x05 \x03(\tR\x06\x63\x61llId\x12\x18\n\x07matched\x18\x06 \x01(\x08R\x07matched\x12\x18\n\x07\x63hecked\x18\x07 \x01(\x08R\x07\x63hecked\x12;\n\x0bmatching_at\x18\x08 \x01(\x0b\x32\x15.google.type.DateTimeH\x00R\nmatchingAt\x88\x01\x01\x12;\n\ttalk_time\x18\t \x01(\x0b\x32\x19.google.protobuf.DurationH\x01R\x08talkTime\x88\x01\x01\x12#\n\ntranscript\x18\n \x01(\tH\x02R\ntranscript\x88\x01\x01\x42\x0e\n\x0c_matching_atB\x0c\n\n_talk_timeB\r\n\x0b_transcript\"$\n\x12GetMatchingRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"C\n\x13GetMatchingResponse\x12,\n\x08matching\x18\x01 \x01(\x0b\x32\x10.api.v1.MatchingR\x08matching\"\xb7\x03\n\x12PutMatchingRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x34\n\ncreated_at\x18\x02 \x01(\x0b\x32\x15.google.type.DateTimeR\tcreatedAt\x12#\n\rserial_number\x18\x03 \x01(\x03R\x0cserialNumber\x12\x1d\n\nscammer_id\x18\x04 \x03(\tR\tscammerId\x12\x17\n\x07\x63\x61ll_id\x18\x05 \x03(\tR\x06\x63\x61llId\x12\x18\n\x07matched\x18\x06 \x01(\x08R\x07matched\x12\x18\n\x07\x63hecked\x18\x07 \x01(\x08R\x07\x63hecked\x12;\n\x0bmatching_at\x18\x08 \x01(\x0b\x32\x15.google.type.DateTimeH\x00R\nmatchingAt\x88\x01\x01\x12;\n\ttalk_time\x18\t \x01(\x0b\x32\x19.google.protobuf.DurationH\x01R\x08talkTime\x88\x01\x01\x12#\n\ntranscript\x18\n \x01(\tH\x02R\ntranscript\x88\x01\x01\x42\x0e\n\x0c_matching_atB\x0c\n\n_talk_timeB\r\n\x0b_transcript\"C\n\x13PutMatchingResponse\x12,\n\x08matching\x18\x01 \x01(\x0b\x32\x10.api.v1.MatchingR\x08matching\"8\n\x15\x44\x65leteMatchingRequest\x12\x1f\n\x0bmatching_id\x18\x01 \x01(\tR\nmatchingId\"\x18\n\x16\x44\x65leteMatchingResponse2\xfd\x01\n\x14MatchingStoreService\x12H\n\x0bGetMatching\x12\x1a.api.v1.GetMatchingRequest\x1a\x1b.api.v1.GetMatchingResponse\"\x00\x12H\n\x0bPutMatching\x12\x1a.api.v1.PutMatchingRequest\x1a\x1b.api.v1.PutMatchingResponse\"\x00\x12Q\n\x0e\x44\x65leteMatching\x12\x1d.api.v1.DeleteMatchingRequest\x1a\x1e.api.v1.DeleteMatchingResponse\"\x00\x42#Z!github.com/tk42/auto-redial;apiv1b\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'api.v1.matching_pb2', globals())
@@ -25,32 +25,18 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._serialized_options = b'Z!github.com/tk42/auto-redial;apiv1'
   _MATCHING._serialized_start=94
   _MATCHING._serialized_end=523
-  _GETMATCHINGQUEUEREQUEST._serialized_start=525
-  _GETMATCHINGQUEUEREQUEST._serialized_end=550
-  _GETMATCHINGQUEUERESPONSE._serialized_start=552
-  _GETMATCHINGQUEUERESPONSE._serialized_end=624
-  _PUTMATCHINGQUEUEREQUEST._serialized_start=627
-  _PUTMATCHINGQUEUEREQUEST._serialized_end=1071
-  _PUTMATCHINGQUEUERESPONSE._serialized_start=1073
-  _PUTMATCHINGQUEUERESPONSE._serialized_end=1145
-  _DELETEMATCHINGQUEUEREQUEST._serialized_start=1147
-  _DELETEMATCHINGQUEUEREQUEST._serialized_end=1208
-  _DELETEMATCHINGQUEUERESPONSE._serialized_start=1210
-  _DELETEMATCHINGQUEUERESPONSE._serialized_end=1239
-  _GETMATCHINGREQUEST._serialized_start=1241
-  _GETMATCHINGREQUEST._serialized_end=1277
-  _GETMATCHINGRESPONSE._serialized_start=1279
-  _GETMATCHINGRESPONSE._serialized_end=1346
-  _PUTMATCHINGREQUEST._serialized_start=1349
-  _PUTMATCHINGREQUEST._serialized_end=1788
-  _PUTMATCHINGRESPONSE._serialized_start=1790
-  _PUTMATCHINGRESPONSE._serialized_end=1857
-  _DELETEMATCHINGREQUEST._serialized_start=1859
-  _DELETEMATCHINGREQUEST._serialized_end=1915
-  _DELETEMATCHINGRESPONSE._serialized_start=1917
-  _DELETEMATCHINGRESPONSE._serialized_end=1941
-  _MATCHINGQUEUESTORESERVICE._serialized_start=1944
-  _MATCHINGQUEUESTORESERVICE._serialized_end=2247
-  _MATCHINGSTORESERVICE._serialized_start=2250
-  _MATCHINGSTORESERVICE._serialized_end=2503
+  _GETMATCHINGREQUEST._serialized_start=525
+  _GETMATCHINGREQUEST._serialized_end=561
+  _GETMATCHINGRESPONSE._serialized_start=563
+  _GETMATCHINGRESPONSE._serialized_end=630
+  _PUTMATCHINGREQUEST._serialized_start=633
+  _PUTMATCHINGREQUEST._serialized_end=1072
+  _PUTMATCHINGRESPONSE._serialized_start=1074
+  _PUTMATCHINGRESPONSE._serialized_end=1141
+  _DELETEMATCHINGREQUEST._serialized_start=1143
+  _DELETEMATCHINGREQUEST._serialized_end=1199
+  _DELETEMATCHINGRESPONSE._serialized_start=1201
+  _DELETEMATCHINGRESPONSE._serialized_end=1225
+  _MATCHINGSTORESERVICE._serialized_start=1228
+  _MATCHINGSTORESERVICE._serialized_end=1481
 # @@protoc_insertion_point(module_scope)
