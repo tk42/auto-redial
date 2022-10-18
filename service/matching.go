@@ -111,7 +111,7 @@ func (s ServiceServer) ListMatching(ctx context.Context, req *bufbuild.ListMatch
 		return nil, err
 	}
 
-	var res []*bufbuild.Matching
+	var resp []*bufbuild.Matching
 	for _, matching := range matchings {
 		scammermatchings, err := s.db.ListScammerMatchingByMatchingId(ctx, matching.ID)
 		if err != nil {
@@ -127,25 +127,25 @@ func (s ServiceServer) ListMatching(ctx context.Context, req *bufbuild.ListMatch
 			for _, call := range calls {
 				call_ids = append(call_ids, call.ID)
 			}
-			res = append(res, &bufbuild.Matching{
-				Id:           matching.ID,
-				ScammerId:    scammer_ids,
-				CallId:       call_ids,
-				CreatedAt:    ConvertTime2Datetime(matching.CreatedAt),
-				SerialNumber: matching.SerialNumber,
-				Matched:      matching.Matched,
-				Checked:      matching.Checked,
-				MatchingAt:   ConvertTime2Datetime(matching.MatchingAt.Time),
-				TalkTime: &durationpb.Duration{
-					Seconds: matching.TalkSec.Int64,
-				},
-				Transcript: &matching.Transcript.String,
-			})
 		}
+		resp = append(resp, &bufbuild.Matching{
+			Id:           matching.ID,
+			ScammerId:    scammer_ids,
+			CallId:       call_ids,
+			CreatedAt:    ConvertTime2Datetime(matching.CreatedAt),
+			SerialNumber: matching.SerialNumber,
+			Matched:      matching.Matched,
+			Checked:      matching.Checked,
+			MatchingAt:   ConvertTime2Datetime(matching.MatchingAt.Time),
+			TalkTime: &durationpb.Duration{
+				Seconds: matching.TalkSec.Int64,
+			},
+			Transcript: &matching.Transcript.String,
+		})
 	}
 
 	return &bufbuild.ListMatchingResponse{
-		Matching: res,
+		Matching: resp,
 	}, nil
 }
 
