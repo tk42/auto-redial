@@ -2,8 +2,9 @@ version: '3'
 services:
   dbmate_up:
     image: 'ghcr.io/amacneil/dbmate:latest'
+    env_file:
+      - .env.local
     environment:
-      - DATABASE_URL=postgres://postgres:e8a48653851e28c69d0506508fb27fc5@db:5432/postgres?sslmode=disable
       - DBMATE_MIGRATIONS_DIR=/db/migrations
       - DBMATE_SCHEMA_FILE=/db/schema/schema.sql
       - DBMATE_WAIT=true
