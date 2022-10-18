@@ -2,9 +2,11 @@ version: v1
 plugins:
   - name: go
     out: gen/proto/golang
-  - name: go-grpc
+  - remote: buf.build/grpc/plugins/go
     out: gen/proto/golang
     opt:
       - require_unimplemented_servers=false
   - name: python
-    out: gen/proto/python
+    out: client
+  - remote: buf.build/grpc/plugins/python
+    out: client
