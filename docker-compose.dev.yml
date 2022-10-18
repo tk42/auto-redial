@@ -17,7 +17,9 @@ services:
       - GRPCUI_PORT=8080
     ports:
       - 8080:8080
-    command: ["sh", "-c", "sleep 10; /usr/local/scripts/start.sh"]
+    volumes:
+      - ./tool:/home
+    command: ["sh", "-c", "/home/wait-for-it.sh server:50051 -- /usr/local/scripts/start.sh"]
     depends_on:
       - server
       - db
@@ -36,10 +38,23 @@ services:
 
   pgweb:
     image: 'sosedoff/pgweb:latest'
-    env_file:
-      - .env.local
+    environment:
+      DATABASE_URL: postgres://postgres:e8a48653851e28c69d0506508fb27fc5@db:5432/postgres?sslmode=disable
     depends_on:
       - db
     ports:
       - 8081:8081
+    # volumes:
+    #   - ./tool:/home
+    # command: ["sh", "-c", "/home/wait-for-it.sh server:50051 -- /usr/bin/pgweb --bind=0.0.0.0 --listen=8081"]
     command: ["sh", "-c", "sleep 10; /usr/bin/pgweb --bind=0.0.0.0 --listen=8081"]
+
+  grafana:
+    image: 'grafana/grafana:latest'
+    volumes:
+      - "./grafana/config:/var/lib/grafana"
+      - "./grafana/datasources:/etc/grafana/provisioning/datasources"
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
