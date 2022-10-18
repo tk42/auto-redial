@@ -105,6 +105,103 @@ func (s ServiceServer) GetMatching(ctx context.Context, req *bufbuild.GetMatchin
 	}, nil
 }
 
+func (s ServiceServer) ListMatching(ctx context.Context, req *bufbuild.ListMatchingRequest) (*bufbuild.ListMatchingResponse, error) {
+	matchings, err := s.db.ListMatching(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var res []*bufbuild.Matching
+	for _, matching := range matchings {
+		scammermatchings, err := s.db.ListScammerMatchingByMatchingId(ctx, matching.ID)
+		if err != nil {
+			return nil, err
+		}
+		var scammer_ids, call_ids []string
+		for _, scammermatching := range scammermatchings {
+			scammer_ids = append(scammer_ids, scammermatching.ScammerID)
+			calls, err := s.db.ListCallHistoryByScammerId(ctx, scammermatching.ScammerID)
+			if err != nil {
+				return nil, err
+			}
+			for _, call := range calls {
+				call_ids = append(call_ids, call.ID)
+			}
+			res = append(res, &bufbuild.Matching{
+				Id:           matching.ID,
+				ScammerId:    scammer_ids,
+				CallId:       call_ids,
+				CreatedAt:    ConvertTime2Datetime(matching.CreatedAt),
+				SerialNumber: matching.SerialNumber,
+				Matched:      matching.Matched,
+				Checked:      matching.Checked,
+				MatchingAt:   ConvertTime2Datetime(matching.MatchingAt.Time),
+				TalkTime: &durationpb.Duration{
+					Seconds: matching.TalkSec.Int64,
+				},
+				Transcript: &matching.Transcript.String,
+			})
+		}
+	}
+
+	return &bufbuild.ListMatchingResponse{
+		Matching: res,
+	}, nil
+}
+
+func (s ServiceServer) UpdateMatching(ctx context.Context, req *bufbuild.UpdateMatchingRequest) (*bufbuild.UpdateMatchingResponse, error) {
+	matching, err := s.GetMatching(ctx, &bufbuild.GetMatchingRequest{
+		Id: req.Id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	if req.Checked != nil {
+		s.db.UpdateMatchingChecked(ctx, sqlc.UpdateMatchingCheckedParams{
+			ID:      matching.Matching.Id,
+			Checked: *req.Checked,
+		})
+		matching.Matching.Checked = *req.Checked
+	} else if req.Transcript != nil {
+		s.db.UpdateMatchingTranscript(ctx, sqlc.UpdateMatchingTranscriptParams{
+			ID: matching.Matching.Id,
+			Transcript: sql.NullString{
+				String: *req.Transcript,
+				Valid:  true,
+			},
+		})
+	} else {
+		params := sqlc.UpdateMatchingMatchedParams{
+			ID: matching.Matching.Id,
+		}
+
+		if req.Matched != nil {
+			matching.Matching.Matched = *req.Matched
+			params.Matched = *req.Matched
+		}
+		if req.MatchingAt != nil {
+			matching.Matching.MatchingAt = req.MatchingAt
+			params.MatchingAt = sql.NullTime{
+				Time:  ConvertDatetime2Time(req.MatchingAt),
+				Valid: true,
+			}
+		}
+		if req.TalkTime != nil {
+			matching.Matching.TalkTime = req.TalkTime
+			params.TalkSec = sql.NullInt64{
+				Int64: req.TalkTime.Seconds,
+				Valid: true,
+			}
+		}
+		s.db.UpdateMatchingMatched(ctx, params)
+	}
+
+	return &bufbuild.UpdateMatchingResponse{
+		Matching: matching.Matching,
+	}, nil
+}
+
 func (s ServiceServer) DeleteMatching(ctx context.Context, req *bufbuild.DeleteMatchingRequest) (*bufbuild.DeleteMatchingResponse, error) {
 	err := s.db.DeleteMatching(ctx, req.MatchingId)
 	if err != nil {

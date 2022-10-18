@@ -418,6 +418,43 @@ func (q *Queries) ListCallHistoryByScammerId(ctx context.Context, scammerID stri
 	return items, nil
 }
 
+const listMatching = `-- name: ListMatching :many
+SELECT id, created_at, serial_number, matched, checked, matching_at, talk_sec, transcript FROM matching
+WHERE checked = matched
+`
+
+func (q *Queries) ListMatching(ctx context.Context) ([]Matching, error) {
+	rows, err := q.db.QueryContext(ctx, listMatching)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Matching
+	for rows.Next() {
+		var i Matching
+		if err := rows.Scan(
+			&i.ID,
+			&i.CreatedAt,
+			&i.SerialNumber,
+			&i.Matched,
+			&i.Checked,
+			&i.MatchingAt,
+			&i.TalkSec,
+			&i.Transcript,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listMatchingTag = `-- name: ListMatchingTag :many
 SELECT matching_id, tag FROM matching_tag
 WHERE matching_id = $1
@@ -661,41 +698,63 @@ func (q *Queries) UpdateCallHistory(ctx context.Context, arg UpdateCallHistoryPa
 	return err
 }
 
-const updateMatching = `-- name: UpdateMatching :exec
+const updateMatchingChecked = `-- name: UpdateMatchingChecked :exec
 UPDATE matching
 SET
-  created_at = $2,
-  serial_number = $3,
-  matched = $4,
-  checked = $5,
-  matching_at = $6,
-  talk_sec = $7,
-  transcript = $8
+  checked = $2
 WHERE id = $1
 `
 
-type UpdateMatchingParams struct {
-	ID           string
-	CreatedAt    time.Time
-	SerialNumber int64
-	Matched      bool
-	Checked      bool
-	MatchingAt   sql.NullTime
-	TalkSec      sql.NullInt64
-	Transcript   sql.NullString
+type UpdateMatchingCheckedParams struct {
+	ID      string
+	Checked bool
 }
 
-func (q *Queries) UpdateMatching(ctx context.Context, arg UpdateMatchingParams) error {
-	_, err := q.db.ExecContext(ctx, updateMatching,
+func (q *Queries) UpdateMatchingChecked(ctx context.Context, arg UpdateMatchingCheckedParams) error {
+	_, err := q.db.ExecContext(ctx, updateMatchingChecked, arg.ID, arg.Checked)
+	return err
+}
+
+const updateMatchingMatched = `-- name: UpdateMatchingMatched :exec
+UPDATE matching
+SET
+  matched = $2,
+  matching_at = $3,
+  talk_sec = $4
+WHERE id = $1
+`
+
+type UpdateMatchingMatchedParams struct {
+	ID         string
+	Matched    bool
+	MatchingAt sql.NullTime
+	TalkSec    sql.NullInt64
+}
+
+func (q *Queries) UpdateMatchingMatched(ctx context.Context, arg UpdateMatchingMatchedParams) error {
+	_, err := q.db.ExecContext(ctx, updateMatchingMatched,
 		arg.ID,
-		arg.CreatedAt,
-		arg.SerialNumber,
 		arg.Matched,
-		arg.Checked,
 		arg.MatchingAt,
 		arg.TalkSec,
-		arg.Transcript,
 	)
+	return err
+}
+
+const updateMatchingTranscript = `-- name: UpdateMatchingTranscript :exec
+UPDATE matching
+SET
+  transcript = $2
+WHERE id = $1
+`
+
+type UpdateMatchingTranscriptParams struct {
+	ID         string
+	Transcript sql.NullString
+}
+
+func (q *Queries) UpdateMatchingTranscript(ctx context.Context, arg UpdateMatchingTranscriptParams) error {
+	_, err := q.db.ExecContext(ctx, updateMatchingTranscript, arg.ID, arg.Transcript)
 	return err
 }
 

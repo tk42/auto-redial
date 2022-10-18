@@ -89,6 +89,10 @@ WHERE id = $1;
 SELECT * FROM matching
 WHERE id = $1;
 
+-- name: ListMatching :many
+SELECT * FROM matching
+WHERE checked = matched;
+
 -- name: CreateMatching :one
 INSERT INTO matching (
   id, created_at, serial_number, matched, checked, matching_at, talk_sec, transcript
@@ -97,16 +101,24 @@ INSERT INTO matching (
 )
 RETURNING *;
 
--- name: UpdateMatching :exec
+-- name: UpdateMatchingMatched :exec
 UPDATE matching
 SET
-  created_at = $2,
-  serial_number = $3,
-  matched = $4,
-  checked = $5,
-  matching_at = $6,
-  talk_sec = $7,
-  transcript = $8
+  matched = $2,
+  matching_at = $3,
+  talk_sec = $4
+WHERE id = $1;
+
+-- name: UpdateMatchingChecked :exec
+UPDATE matching
+SET
+  checked = $2
+WHERE id = $1;
+
+-- name: UpdateMatchingTranscript :exec
+UPDATE matching
+SET
+  transcript = $2
 WHERE id = $1;
 
 -- name: DeleteMatching :exec

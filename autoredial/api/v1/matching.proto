@@ -28,6 +28,26 @@ message GetMatchingResponse {
   Matching matching = 1;
 }
 
+message ListMatchingRequest {
+}
+
+message ListMatchingResponse {
+  repeated Matching matching = 1;
+}
+
+message UpdateMatchingRequest {
+  string id = 1;
+  optional bool matched = 2;
+  optional bool checked = 3;
+  optional google.type.DateTime matching_at = 4;
+  optional google.protobuf.Duration talk_time = 5;
+  optional string transcript = 6;
+}
+
+message UpdateMatchingResponse {
+  Matching matching = 1;
+}
+
 message PutMatchingRequest {
   string id = 1;
   google.type.DateTime created_at = 2;
@@ -53,6 +73,8 @@ message DeleteMatchingResponse {}
 
 service MatchingStoreService {
   rpc GetMatching(GetMatchingRequest) returns (GetMatchingResponse) {}
+  rpc ListMatching(ListMatchingRequest) returns (ListMatchingResponse) {}
   rpc PutMatching(PutMatchingRequest) returns (PutMatchingResponse) {}
+  rpc UpdateMatching(UpdateMatchingRequest) returns (UpdateMatchingResponse) {}
   rpc DeleteMatching(DeleteMatchingRequest) returns (DeleteMatchingResponse) {}
 }

@@ -23,7 +23,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MatchingStoreServiceClient interface {
 	GetMatching(ctx context.Context, in *GetMatchingRequest, opts ...grpc.CallOption) (*GetMatchingResponse, error)
+	ListMatching(ctx context.Context, in *ListMatchingRequest, opts ...grpc.CallOption) (*ListMatchingResponse, error)
 	PutMatching(ctx context.Context, in *PutMatchingRequest, opts ...grpc.CallOption) (*PutMatchingResponse, error)
+	UpdateMatching(ctx context.Context, in *UpdateMatchingRequest, opts ...grpc.CallOption) (*UpdateMatchingResponse, error)
 	DeleteMatching(ctx context.Context, in *DeleteMatchingRequest, opts ...grpc.CallOption) (*DeleteMatchingResponse, error)
 }
 
@@ -44,9 +46,27 @@ func (c *matchingStoreServiceClient) GetMatching(ctx context.Context, in *GetMat
 	return out, nil
 }
 
+func (c *matchingStoreServiceClient) ListMatching(ctx context.Context, in *ListMatchingRequest, opts ...grpc.CallOption) (*ListMatchingResponse, error) {
+	out := new(ListMatchingResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.MatchingStoreService/ListMatching", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *matchingStoreServiceClient) PutMatching(ctx context.Context, in *PutMatchingRequest, opts ...grpc.CallOption) (*PutMatchingResponse, error) {
 	out := new(PutMatchingResponse)
 	err := c.cc.Invoke(ctx, "/api.v1.MatchingStoreService/PutMatching", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *matchingStoreServiceClient) UpdateMatching(ctx context.Context, in *UpdateMatchingRequest, opts ...grpc.CallOption) (*UpdateMatchingResponse, error) {
+	out := new(UpdateMatchingResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.MatchingStoreService/UpdateMatching", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +87,9 @@ func (c *matchingStoreServiceClient) DeleteMatching(ctx context.Context, in *Del
 // for forward compatibility
 type MatchingStoreServiceServer interface {
 	GetMatching(context.Context, *GetMatchingRequest) (*GetMatchingResponse, error)
+	ListMatching(context.Context, *ListMatchingRequest) (*ListMatchingResponse, error)
 	PutMatching(context.Context, *PutMatchingRequest) (*PutMatchingResponse, error)
+	UpdateMatching(context.Context, *UpdateMatchingRequest) (*UpdateMatchingResponse, error)
 	DeleteMatching(context.Context, *DeleteMatchingRequest) (*DeleteMatchingResponse, error)
 }
 
@@ -78,8 +100,14 @@ type UnimplementedMatchingStoreServiceServer struct {
 func (UnimplementedMatchingStoreServiceServer) GetMatching(context.Context, *GetMatchingRequest) (*GetMatchingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMatching not implemented")
 }
+func (UnimplementedMatchingStoreServiceServer) ListMatching(context.Context, *ListMatchingRequest) (*ListMatchingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMatching not implemented")
+}
 func (UnimplementedMatchingStoreServiceServer) PutMatching(context.Context, *PutMatchingRequest) (*PutMatchingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PutMatching not implemented")
+}
+func (UnimplementedMatchingStoreServiceServer) UpdateMatching(context.Context, *UpdateMatchingRequest) (*UpdateMatchingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMatching not implemented")
 }
 func (UnimplementedMatchingStoreServiceServer) DeleteMatching(context.Context, *DeleteMatchingRequest) (*DeleteMatchingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteMatching not implemented")
@@ -114,6 +142,24 @@ func _MatchingStoreService_GetMatching_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MatchingStoreService_ListMatching_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMatchingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MatchingStoreServiceServer).ListMatching(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.MatchingStoreService/ListMatching",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MatchingStoreServiceServer).ListMatching(ctx, req.(*ListMatchingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _MatchingStoreService_PutMatching_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PutMatchingRequest)
 	if err := dec(in); err != nil {
@@ -128,6 +174,24 @@ func _MatchingStoreService_PutMatching_Handler(srv interface{}, ctx context.Cont
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MatchingStoreServiceServer).PutMatching(ctx, req.(*PutMatchingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MatchingStoreService_UpdateMatching_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMatchingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MatchingStoreServiceServer).UpdateMatching(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.MatchingStoreService/UpdateMatching",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MatchingStoreServiceServer).UpdateMatching(ctx, req.(*UpdateMatchingRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -162,8 +226,16 @@ var MatchingStoreService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _MatchingStoreService_GetMatching_Handler,
 		},
 		{
+			MethodName: "ListMatching",
+			Handler:    _MatchingStoreService_ListMatching_Handler,
+		},
+		{
 			MethodName: "PutMatching",
 			Handler:    _MatchingStoreService_PutMatching_Handler,
+		},
+		{
+			MethodName: "UpdateMatching",
+			Handler:    _MatchingStoreService_UpdateMatching_Handler,
 		},
 		{
 			MethodName: "DeleteMatching",
