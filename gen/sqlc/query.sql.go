@@ -146,7 +146,7 @@ INSERT INTO scammer (
 ) VALUES (
   $1, $2, $3, $4
 )
-RETURNING id, name, tel, is_active
+RETURNING id, tel, name, is_active
 `
 
 type CreateScammerParams struct {
@@ -166,8 +166,8 @@ func (q *Queries) CreateScammer(ctx context.Context, arg CreateScammerParams) (S
 	var i Scammer
 	err := row.Scan(
 		&i.ID,
-		&i.Name,
 		&i.Tel,
+		&i.Name,
 		&i.IsActive,
 	)
 	return i, err
@@ -367,7 +367,7 @@ func (q *Queries) GetMatching(ctx context.Context, id string) (Matching, error) 
 }
 
 const getScammer = `-- name: GetScammer :one
-SELECT id, name, tel, is_active FROM scammer
+SELECT id, tel, name, is_active FROM scammer
 WHERE id = $1
 `
 
@@ -376,8 +376,8 @@ func (q *Queries) GetScammer(ctx context.Context, id string) (Scammer, error) {
 	var i Scammer
 	err := row.Scan(
 		&i.ID,
-		&i.Name,
 		&i.Tel,
+		&i.Name,
 		&i.IsActive,
 	)
 	return i, err

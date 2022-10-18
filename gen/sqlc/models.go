@@ -47,8 +47,8 @@ type Metric struct {
 
 type Scammer struct {
 	ID       string
-	Name     string
 	Tel      string
+	Name     string
 	IsActive bool
 }
 

@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14\x61pi/v1/scammer.proto\x12\x06\x61pi.v1\"\x86\x01\n\x07Scammer\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n\x04name\x18\x02 \x01(\tR\x04name\x12\x10\n\x03tel\x18\x03 \x01(\tR\x03tel\x12\x12\n\x04tags\x18\x04 \x03(\tR\x04tags\x12\x14\n\x05\x63\x61lls\x18\x05 \x03(\tR\x05\x63\x61lls\x12\x1b\n\tis_active\x18\x06 \x01(\x08R\x08isActive\"#\n\x11GetScammerRequest\x12\x0e\n\x02id\x18\x01 \x03(\tR\x02id\"?\n\x12GetScammerResponse\x12)\n\x07scammer\x18\x01 \x03(\x0b\x32\x0f.api.v1.ScammerR\x07scammer\"\x90\x01\n\x11PutScammerRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n\x04name\x18\x02 \x01(\tR\x04name\x12\x10\n\x03tel\x18\x03 \x01(\tR\x03tel\x12\x12\n\x04tags\x18\x04 \x03(\tR\x04tags\x12\x14\n\x05\x63\x61lls\x18\x05 \x03(\tR\x05\x63\x61lls\x12\x1b\n\tis_active\x18\x06 \x01(\x08R\x08isActive\"?\n\x12PutScammerResponse\x12)\n\x07scammer\x18\x01 \x01(\x0b\x32\x0f.api.v1.ScammerR\x07scammer\"&\n\x14\x44\x65leteScammerRequest\x12\x0e\n\x02id\x18\x01 \x03(\tR\x02id\"\x17\n\x15\x44\x65leteScammerResponse2\xf3\x01\n\x13ScammerStoreService\x12\x45\n\nGetScammer\x12\x19.api.v1.GetScammerRequest\x1a\x1a.api.v1.GetScammerResponse\"\x00\x12\x45\n\nPutScammer\x12\x19.api.v1.PutScammerRequest\x1a\x1a.api.v1.PutScammerResponse\"\x00\x12N\n\rDeleteScammer\x12\x1c.api.v1.DeleteScammerRequest\x1a\x1d.api.v1.DeleteScammerResponse\"\x00\x42#Z!github.com/tk42/auto-redial;apiv1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14\x61pi/v1/scammer.proto\x12\x06\x61pi.v1\"\x86\x01\n\x07Scammer\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n\x04name\x18\x02 \x01(\tR\x04name\x12\x10\n\x03tel\x18\x03 \x01(\tR\x03tel\x12\x12\n\x04tags\x18\x04 \x03(\tR\x04tags\x12\x14\n\x05\x63\x61lls\x18\x05 \x03(\tR\x05\x63\x61lls\x12\x1b\n\tis_active\x18\x06 \x01(\x08R\x08isActive\"#\n\x11GetScammerRequest\x12\x0e\n\x02id\x18\x01 \x03(\tR\x02id\"?\n\x12GetScammerResponse\x12)\n\x07scammer\x18\x01 \x03(\x0b\x32\x0f.api.v1.ScammerR\x07scammer\"\x90\x01\n\x11PutScammerRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n\x04name\x18\x02 \x01(\tR\x04name\x12\x10\n\x03tel\x18\x03 \x01(\tR\x03tel\x12\x12\n\x04tags\x18\x04 \x03(\tR\x04tags\x12\x14\n\x05\x63\x61lls\x18\x05 \x03(\tR\x05\x63\x61lls\x12\x1b\n\tis_active\x18\x06 \x01(\x08R\x08isActive\"?\n\x12PutScammerResponse\x12)\n\x07scammer\x18\x01 \x01(\x0b\x32\x0f.api.v1.ScammerR\x07scammer\"4\n\x10UpdateTagRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x10\n\x03tag\x18\x02 \x01(\tR\x03tag\"\'\n\x11UpdateTagResponse\x12\x12\n\x04tags\x18\x01 \x03(\tR\x04tags\"7\n\x11UpdateCallRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n\x04\x63\x61ll\x18\x02 \x01(\tR\x04\x63\x61ll\"*\n\x12UpdateCallResponse\x12\x14\n\x05\x63\x61lls\x18\x01 \x03(\tR\x05\x63\x61lls\"&\n\x14\x44\x65leteScammerRequest\x12\x0e\n\x02id\x18\x01 \x03(\tR\x02id\"\x17\n\x15\x44\x65leteScammerResponse2\xfe\x02\n\x13ScammerStoreService\x12\x45\n\nGetScammer\x12\x19.api.v1.GetScammerRequest\x1a\x1a.api.v1.GetScammerResponse\"\x00\x12\x45\n\nPutScammer\x12\x19.api.v1.PutScammerRequest\x1a\x1a.api.v1.PutScammerResponse\"\x00\x12\x42\n\tUpdateTag\x12\x18.api.v1.UpdateTagRequest\x1a\x19.api.v1.UpdateTagResponse\"\x00\x12\x45\n\nUpdateCall\x12\x19.api.v1.UpdateCallRequest\x1a\x1a.api.v1.UpdateCallResponse\"\x00\x12N\n\rDeleteScammer\x12\x1c.api.v1.DeleteScammerRequest\x1a\x1d.api.v1.DeleteScammerResponse\"\x00\x42#Z!github.com/tk42/auto-redial;apiv1b\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'api.v1.scammer_pb2', globals())
@@ -31,10 +31,18 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _PUTSCAMMERREQUEST._serialized_end=416
   _PUTSCAMMERRESPONSE._serialized_start=418
   _PUTSCAMMERRESPONSE._serialized_end=481
-  _DELETESCAMMERREQUEST._serialized_start=483
-  _DELETESCAMMERREQUEST._serialized_end=521
-  _DELETESCAMMERRESPONSE._serialized_start=523
-  _DELETESCAMMERRESPONSE._serialized_end=546
-  _SCAMMERSTORESERVICE._serialized_start=549
-  _SCAMMERSTORESERVICE._serialized_end=792
+  _UPDATETAGREQUEST._serialized_start=483
+  _UPDATETAGREQUEST._serialized_end=535
+  _UPDATETAGRESPONSE._serialized_start=537
+  _UPDATETAGRESPONSE._serialized_end=576
+  _UPDATECALLREQUEST._serialized_start=578
+  _UPDATECALLREQUEST._serialized_end=633
+  _UPDATECALLRESPONSE._serialized_start=635
+  _UPDATECALLRESPONSE._serialized_end=677
+  _DELETESCAMMERREQUEST._serialized_start=679
+  _DELETESCAMMERREQUEST._serialized_end=717
+  _DELETESCAMMERRESPONSE._serialized_start=719
+  _DELETESCAMMERRESPONSE._serialized_end=742
+  _SCAMMERSTORESERVICE._serialized_start=745
+  _SCAMMERSTORESERVICE._serialized_end=1127
 # @@protoc_insertion_point(module_scope)

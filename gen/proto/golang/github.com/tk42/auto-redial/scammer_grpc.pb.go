@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type ScammerStoreServiceClient interface {
 	GetScammer(ctx context.Context, in *GetScammerRequest, opts ...grpc.CallOption) (*GetScammerResponse, error)
 	PutScammer(ctx context.Context, in *PutScammerRequest, opts ...grpc.CallOption) (*PutScammerResponse, error)
+	UpdateTag(ctx context.Context, in *UpdateTagRequest, opts ...grpc.CallOption) (*UpdateTagResponse, error)
+	UpdateCall(ctx context.Context, in *UpdateCallRequest, opts ...grpc.CallOption) (*UpdateCallResponse, error)
 	DeleteScammer(ctx context.Context, in *DeleteScammerRequest, opts ...grpc.CallOption) (*DeleteScammerResponse, error)
 }
 
@@ -53,6 +55,24 @@ func (c *scammerStoreServiceClient) PutScammer(ctx context.Context, in *PutScamm
 	return out, nil
 }
 
+func (c *scammerStoreServiceClient) UpdateTag(ctx context.Context, in *UpdateTagRequest, opts ...grpc.CallOption) (*UpdateTagResponse, error) {
+	out := new(UpdateTagResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.ScammerStoreService/UpdateTag", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *scammerStoreServiceClient) UpdateCall(ctx context.Context, in *UpdateCallRequest, opts ...grpc.CallOption) (*UpdateCallResponse, error) {
+	out := new(UpdateCallResponse)
+	err := c.cc.Invoke(ctx, "/api.v1.ScammerStoreService/UpdateCall", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *scammerStoreServiceClient) DeleteScammer(ctx context.Context, in *DeleteScammerRequest, opts ...grpc.CallOption) (*DeleteScammerResponse, error) {
 	out := new(DeleteScammerResponse)
 	err := c.cc.Invoke(ctx, "/api.v1.ScammerStoreService/DeleteScammer", in, out, opts...)
@@ -68,6 +88,8 @@ func (c *scammerStoreServiceClient) DeleteScammer(ctx context.Context, in *Delet
 type ScammerStoreServiceServer interface {
 	GetScammer(context.Context, *GetScammerRequest) (*GetScammerResponse, error)
 	PutScammer(context.Context, *PutScammerRequest) (*PutScammerResponse, error)
+	UpdateTag(context.Context, *UpdateTagRequest) (*UpdateTagResponse, error)
+	UpdateCall(context.Context, *UpdateCallRequest) (*UpdateCallResponse, error)
 	DeleteScammer(context.Context, *DeleteScammerRequest) (*DeleteScammerResponse, error)
 }
 
@@ -80,6 +102,12 @@ func (UnimplementedScammerStoreServiceServer) GetScammer(context.Context, *GetSc
 }
 func (UnimplementedScammerStoreServiceServer) PutScammer(context.Context, *PutScammerRequest) (*PutScammerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PutScammer not implemented")
+}
+func (UnimplementedScammerStoreServiceServer) UpdateTag(context.Context, *UpdateTagRequest) (*UpdateTagResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTag not implemented")
+}
+func (UnimplementedScammerStoreServiceServer) UpdateCall(context.Context, *UpdateCallRequest) (*UpdateCallResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateCall not implemented")
 }
 func (UnimplementedScammerStoreServiceServer) DeleteScammer(context.Context, *DeleteScammerRequest) (*DeleteScammerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteScammer not implemented")
@@ -132,6 +160,42 @@ func _ScammerStoreService_PutScammer_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ScammerStoreService_UpdateTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ScammerStoreServiceServer).UpdateTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.ScammerStoreService/UpdateTag",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ScammerStoreServiceServer).UpdateTag(ctx, req.(*UpdateTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ScammerStoreService_UpdateCall_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateCallRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ScammerStoreServiceServer).UpdateCall(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.v1.ScammerStoreService/UpdateCall",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ScammerStoreServiceServer).UpdateCall(ctx, req.(*UpdateCallRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ScammerStoreService_DeleteScammer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteScammerRequest)
 	if err := dec(in); err != nil {
@@ -164,6 +228,14 @@ var ScammerStoreService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PutScammer",
 			Handler:    _ScammerStoreService_PutScammer_Handler,
+		},
+		{
+			MethodName: "UpdateTag",
+			Handler:    _ScammerStoreService_UpdateTag_Handler,
+		},
+		{
+			MethodName: "UpdateCall",
+			Handler:    _ScammerStoreService_UpdateCall_Handler,
 		},
 		{
 			MethodName: "DeleteScammer",

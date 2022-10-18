@@ -34,6 +34,24 @@ message PutScammerResponse {
   Scammer scammer = 1;
 }
 
+message UpdateTagRequest {
+  string id = 1;
+  string tag = 2;
+}
+
+message UpdateTagResponse {
+  repeated string tags = 1;
+}
+
+message UpdateCallRequest {
+  string id = 1;
+  string call = 2;
+}
+
+message UpdateCallResponse {
+  repeated string calls = 1;
+}
+
 message DeleteScammerRequest {
   repeated string id = 1;
 }
@@ -43,5 +61,7 @@ message DeleteScammerResponse {}
 service ScammerStoreService {
   rpc GetScammer(GetScammerRequest) returns (GetScammerResponse) {}
   rpc PutScammer(PutScammerRequest) returns (PutScammerResponse) {}
+  rpc UpdateTag(UpdateTagRequest) returns (UpdateTagResponse) {}
+  rpc UpdateCall(UpdateCallRequest) returns (UpdateCallResponse) {}
   rpc DeleteScammer(DeleteScammerRequest) returns (DeleteScammerResponse) {}
 }

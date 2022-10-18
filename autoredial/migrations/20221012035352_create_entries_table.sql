@@ -11,8 +11,8 @@ CREATE TABLE metric (
 );
 
 CREATE TABLE scammer (
-  tel               VARCHAR(255) PRIMARY KEY NOT NULL,
-  id                VARCHAR(255) NOT NULL,
+  id                VARCHAR(255) PRIMARY KEY NOT NULL,
+  tel               VARCHAR(255) NOT NULL,
   name              VARCHAR(255) NOT NULL,
   is_active         BOOLEAN NOT NULL
 );

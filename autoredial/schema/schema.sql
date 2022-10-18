@@ -94,8 +94,8 @@ CREATE TABLE public.metric (
 
 CREATE TABLE public.scammer (
     id character varying(255) NOT NULL,
-    name character varying(255) NOT NULL,
     tel character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
     is_active boolean NOT NULL
 );
 

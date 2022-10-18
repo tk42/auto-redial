@@ -35,13 +35,16 @@ func (s ServiceServer) PutScammer(ctx context.Context, req *bufbuild.PutScammerR
 		call_ids = append(call_ids, c.CallID)
 	}
 
-	tags, err := s.db.ListScammerTag(ctx, scammer.ID)
-	if err != nil {
-		return nil, err
-	}
 	var tag_labels []string
-	for _, t := range tags {
-		tag_labels = append(tag_labels, t.Tag)
+	for _, tag := range req.Tags {
+		_, err := s.db.CreateScammerTag(ctx, autoredial.CreateScammerTagParams{
+			ScammerID: scammer.ID,
+			Tag:       tag,
+		})
+		if err != nil {
+			return nil, err
+		}
+		tag_labels = append(tag_labels, tag)
 	}
 
 	return &bufbuild.PutScammerResponse{
@@ -53,6 +56,42 @@ func (s ServiceServer) PutScammer(ctx context.Context, req *bufbuild.PutScammerR
 			Tags:     tag_labels,
 			Calls:    call_ids,
 		},
+	}, nil
+}
+
+func (s ServiceServer) UpdateTag(ctx context.Context, req *bufbuild.UpdateTagRequest) (*bufbuild.UpdateTagResponse, error) {
+	s.db.CreateScammerTag(ctx, autoredial.CreateScammerTagParams{
+		ScammerID: req.GetId(),
+		Tag:       req.GetTag(),
+	})
+	tags, err := s.db.ListScammerTag(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	var tag_labels []string
+	for _, tag := range tags {
+		tag_labels = append(tag_labels, tag.Tag)
+	}
+	return &bufbuild.UpdateTagResponse{
+		Tags: tag_labels,
+	}, nil
+}
+
+func (s ServiceServer) UpdateCall(ctx context.Context, req *bufbuild.UpdateCallRequest) (*bufbuild.UpdateCallResponse, error) {
+	s.db.CreateScammerCall(ctx, autoredial.CreateScammerCallParams{
+		ScammerID: req.GetId(),
+		CallID:    req.GetCall(),
+	})
+	calls, err := s.db.ListScammerCallByScammerId(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	var call_labels []string
+	for _, call := range calls {
+		call_labels = append(call_labels, call.CallID)
+	}
+	return &bufbuild.UpdateCallResponse{
+		Calls: call_labels,
 	}, nil
 }
 
