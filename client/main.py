@@ -1,6 +1,9 @@
 import os
 import grpc
-from flask import Request
+from flask import Request, Response
+
+# from twilio.twiml.voice_response import VoiceResponse, Dial
+
 import functions_framework
 from protobuf_to_dict import protobuf_to_dict as ptd
 from werkzeug.datastructures import MultiDict
@@ -25,6 +28,7 @@ def call(args: MultiDict):
             scammer_set |= set(matching.scammer_id)
         scammers = scammer_store.GetScammer(GetScammerRequest(id=list(scammer_set)))
         tels = [s.tel for s in scammers.scammer]
+
     except grpc._channel._InactiveRpcError as e:
         return {"error": str(e._state.details), "details": str(e.debug_error_string)}
     except Exception as e:
@@ -37,7 +41,11 @@ def main(request: Request):
     path = request.path
     args = request.args
 
-    if path.startswith("/call"):
+    if path == "/":
+        with open("./twilio.xml", encoding="utf8") as f:
+            content = f.read()
+        return Response(content, mimetype="text/xml")
+    elif path.startswith("/call"):
         return call(args)
     else:
         return f"Unknown endpoint {path}"
