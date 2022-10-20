@@ -12,6 +12,14 @@ services:
     depends_on:
       - db
 
+  twilio:
+    build:
+      context: ./twilio
+    env_file:
+      - ./twilio/.env
+    ports:
+      - 5050:5050
+
   grpcui:
     image: 'wongnai/grpcui:latest'
     environment:

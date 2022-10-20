@@ -7,6 +7,6 @@ plugins:
     opt:
       - require_unimplemented_servers=false
   - name: python
-    out: client
+    out: twilio
   - remote: buf.build/grpc/plugins/python
-    out: client
+    out: twilio
