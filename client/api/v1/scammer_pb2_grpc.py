@@ -24,15 +24,10 @@ class ScammerStoreServiceStub(object):
                 request_serializer=api_dot_v1_dot_scammer__pb2.PutScammerRequest.SerializeToString,
                 response_deserializer=api_dot_v1_dot_scammer__pb2.PutScammerResponse.FromString,
                 )
-        self.UpdateTag = channel.unary_unary(
-                '/api.v1.ScammerStoreService/UpdateTag',
-                request_serializer=api_dot_v1_dot_scammer__pb2.UpdateTagRequest.SerializeToString,
-                response_deserializer=api_dot_v1_dot_scammer__pb2.UpdateTagResponse.FromString,
-                )
-        self.UpdateCall = channel.unary_unary(
-                '/api.v1.ScammerStoreService/UpdateCall',
-                request_serializer=api_dot_v1_dot_scammer__pb2.UpdateCallRequest.SerializeToString,
-                response_deserializer=api_dot_v1_dot_scammer__pb2.UpdateCallResponse.FromString,
+        self.UpdateScammer = channel.unary_unary(
+                '/api.v1.ScammerStoreService/UpdateScammer',
+                request_serializer=api_dot_v1_dot_scammer__pb2.UpdateScammerRequest.SerializeToString,
+                response_deserializer=api_dot_v1_dot_scammer__pb2.UpdateScammerResponse.FromString,
                 )
         self.DeleteScammer = channel.unary_unary(
                 '/api.v1.ScammerStoreService/DeleteScammer',
@@ -56,13 +51,7 @@ class ScammerStoreServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UpdateTag(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def UpdateCall(self, request, context):
+    def UpdateScammer(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -87,15 +76,10 @@ def add_ScammerStoreServiceServicer_to_server(servicer, server):
                     request_deserializer=api_dot_v1_dot_scammer__pb2.PutScammerRequest.FromString,
                     response_serializer=api_dot_v1_dot_scammer__pb2.PutScammerResponse.SerializeToString,
             ),
-            'UpdateTag': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateTag,
-                    request_deserializer=api_dot_v1_dot_scammer__pb2.UpdateTagRequest.FromString,
-                    response_serializer=api_dot_v1_dot_scammer__pb2.UpdateTagResponse.SerializeToString,
-            ),
-            'UpdateCall': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateCall,
-                    request_deserializer=api_dot_v1_dot_scammer__pb2.UpdateCallRequest.FromString,
-                    response_serializer=api_dot_v1_dot_scammer__pb2.UpdateCallResponse.SerializeToString,
+            'UpdateScammer': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateScammer,
+                    request_deserializer=api_dot_v1_dot_scammer__pb2.UpdateScammerRequest.FromString,
+                    response_serializer=api_dot_v1_dot_scammer__pb2.UpdateScammerResponse.SerializeToString,
             ),
             'DeleteScammer': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteScammer,
@@ -147,7 +131,7 @@ class ScammerStoreService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def UpdateTag(request,
+    def UpdateScammer(request,
             target,
             options=(),
             channel_credentials=None,
@@ -157,26 +141,9 @@ class ScammerStoreService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/api.v1.ScammerStoreService/UpdateTag',
-            api_dot_v1_dot_scammer__pb2.UpdateTagRequest.SerializeToString,
-            api_dot_v1_dot_scammer__pb2.UpdateTagResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def UpdateCall(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/api.v1.ScammerStoreService/UpdateCall',
-            api_dot_v1_dot_scammer__pb2.UpdateCallRequest.SerializeToString,
-            api_dot_v1_dot_scammer__pb2.UpdateCallResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/api.v1.ScammerStoreService/UpdateScammer',
+            api_dot_v1_dot_scammer__pb2.UpdateScammerRequest.SerializeToString,
+            api_dot_v1_dot_scammer__pb2.UpdateScammerResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

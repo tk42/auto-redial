@@ -59,39 +59,60 @@ func (s ServiceServer) PutScammer(ctx context.Context, req *bufbuild.PutScammerR
 	}, nil
 }
 
-func (s ServiceServer) UpdateTag(ctx context.Context, req *bufbuild.UpdateTagRequest) (*bufbuild.UpdateTagResponse, error) {
-	s.db.CreateScammerTag(ctx, autoredial.CreateScammerTagParams{
-		ScammerID: req.GetId(),
-		Tag:       req.GetTag(),
-	})
-	tags, err := s.db.ListScammerTag(ctx, req.GetId())
+func (s ServiceServer) UpdateScammer(ctx context.Context, req *bufbuild.UpdateScammerRequest) (*bufbuild.UpdateScammerResponse, error) {
+	scammer, err := s.db.GetScammer(ctx, req.GetId())
 	if err != nil {
 		return nil, err
 	}
-	var tag_labels []string
-	for _, tag := range tags {
-		tag_labels = append(tag_labels, tag.Tag)
-	}
-	return &bufbuild.UpdateTagResponse{
-		Tags: tag_labels,
-	}, nil
-}
 
-func (s ServiceServer) UpdateCall(ctx context.Context, req *bufbuild.UpdateCallRequest) (*bufbuild.UpdateCallResponse, error) {
-	s.db.CreateScammerCall(ctx, autoredial.CreateScammerCallParams{
-		ScammerID: req.GetId(),
-		CallID:    req.GetCall(),
-	})
-	calls, err := s.db.ListScammerCallByScammerId(ctx, req.GetId())
-	if err != nil {
-		return nil, err
+	if req.IsActive != nil {
+		s.db.UpdateScammer(ctx, autoredial.UpdateScammerParams{
+			ID: scammer.ID,
+			// Name:     scammer.Name,
+			// Tel:      scammer.Tel,
+			IsActive: req.GetIsActive(),
+		})
 	}
+
+	var tag_labels []string
+	if req.Tag != nil {
+		s.db.CreateScammerTag(ctx, autoredial.CreateScammerTagParams{
+			ScammerID: req.GetId(),
+			Tag:       req.GetTag(),
+		})
+		tags, err := s.db.ListScammerTag(ctx, req.GetId())
+		if err != nil {
+			return nil, err
+		}
+		for _, tag := range tags {
+			tag_labels = append(tag_labels, tag.Tag)
+		}
+	}
+
 	var call_labels []string
-	for _, call := range calls {
-		call_labels = append(call_labels, call.CallID)
+	if req.Call != nil {
+		s.db.CreateScammerCall(ctx, autoredial.CreateScammerCallParams{
+			ScammerID: req.GetId(),
+			CallID:    req.GetCall(),
+		})
+		calls, err := s.db.ListScammerCallByScammerId(ctx, req.GetId())
+		if err != nil {
+			return nil, err
+		}
+		for _, call := range calls {
+			call_labels = append(call_labels, call.CallID)
+		}
 	}
-	return &bufbuild.UpdateCallResponse{
-		Calls: call_labels,
+
+	return &bufbuild.UpdateScammerResponse{
+		Scammer: &bufbuild.Scammer{
+			Id:       scammer.ID,
+			Name:     scammer.Name,
+			Tel:      scammer.Tel,
+			IsActive: req.GetIsActive(),
+			Tags:     tag_labels,
+			Calls:    call_labels,
+		},
 	}, nil
 }
 
