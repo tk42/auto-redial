@@ -29,6 +29,8 @@ message GetMatchingResponse {
 }
 
 message ListMatchingRequest {
+  google.type.DateTime from = 1;
+  google.type.DateTime to = 2;
 }
 
 message ListMatchingResponse {

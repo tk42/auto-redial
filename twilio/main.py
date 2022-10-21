@@ -26,14 +26,22 @@ client = Client(account_sid, auth_token)
 app = Flask(__name__)
 
 
-@app.route("/call")
-def call():
+@app.route("/call?f=<from_>&t=<to>", methods=["GET"])
+def call(from_: str, to: str) -> Response:
     """/call takes a matching and call them"""
     try:
+        assert from_ and to, "f and t are required"
+
         confereces = client.conferences.list()
         assert len(confereces) > 0, "Start a new conference first"
+        if len(confereces) > 1:
+            for c in confereces[1:]:
+                c.delete()
 
-        resp = matching_store.ListMatching(ListMatchingRequest())
+        resp = matching_store.ListMatching(ListMatchingRequest(
+            from_=from_,
+            to=to,
+        ))
 
         all_scammers = []
 

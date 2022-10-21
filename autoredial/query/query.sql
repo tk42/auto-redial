@@ -91,7 +91,7 @@ WHERE id = $1;
 
 -- name: ListMatching :many
 SELECT * FROM matching
-WHERE checked = matched;
+WHERE created_at BETWEEN $1 AND $2;
 
 -- name: CreateMatching :one
 INSERT INTO matching (

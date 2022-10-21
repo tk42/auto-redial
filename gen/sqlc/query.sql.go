@@ -420,11 +420,16 @@ func (q *Queries) ListCallHistoryByScammerId(ctx context.Context, scammerID stri
 
 const listMatching = `-- name: ListMatching :many
 SELECT id, created_at, serial_number, matched, checked, matching_at, talk_sec, transcript FROM matching
-WHERE checked = matched
+WHERE created_at BETWEEN $1 AND $2
 `
 
-func (q *Queries) ListMatching(ctx context.Context) ([]Matching, error) {
-	rows, err := q.db.QueryContext(ctx, listMatching)
+type ListMatchingParams struct {
+	CreatedAt   time.Time
+	CreatedAt_2 time.Time
+}
+
+func (q *Queries) ListMatching(ctx context.Context, arg ListMatchingParams) ([]Matching, error) {
+	rows, err := q.db.QueryContext(ctx, listMatching, arg.CreatedAt, arg.CreatedAt_2)
 	if err != nil {
 		return nil, err
 	}
