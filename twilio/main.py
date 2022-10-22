@@ -1,6 +1,6 @@
 import os
 import grpc
-from flask import Request, Response, Flask
+from flask import request, Request, Response, Flask
 
 from twilio.rest import Client
 from twilio.twiml.voice_response import VoiceResponse
@@ -26,11 +26,14 @@ client = Client(account_sid, auth_token)
 app = Flask(__name__)
 
 
-@app.route("/call?f=<from_>&t=<to>", methods=["GET"])
-def call(from_: str, to: str) -> Response:
+@app.route("/call", methods=["GET"])
+def call() -> Response:
     """/call takes a matching and call them"""
     try:
-        assert from_ and to, "f and t are required"
+        args = request.args
+        f = args.get("f")
+        t = args.get("t")
+        assert f and t, "f and t are required"
 
         confereces = client.conferences.list()
         assert len(confereces) > 0, "Start a new conference first"
@@ -39,8 +42,8 @@ def call(from_: str, to: str) -> Response:
                 c.delete()
 
         resp = matching_store.ListMatching(ListMatchingRequest(
-            from_=from_,
-            to=to,
+            from_=f,
+            to=t,
         ))
 
         all_scammers = []
