@@ -26,6 +26,14 @@ client = Client(account_sid, auth_token)
 app = Flask(__name__)
 
 
+@app.route("/conferences", methods=["GET"])
+def check() -> Response:
+    confereces = client.conferences.list()
+    return Response({
+        "conferences": [c.sid for c in confereces],
+    }, mimetype="application/json")
+
+
 @app.route("/call", methods=["GET"])
 def call() -> Response:
     """/call takes a matching and call them"""
