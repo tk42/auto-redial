@@ -1,7 +1,8 @@
 import os
 import json
 import grpc
-from flask import request, Request, Response, Flask
+from datetime import datetime
+from flask import request, Response, Flask
 
 from twilio.rest import Client
 from twilio.twiml.voice_response import VoiceResponse
@@ -57,51 +58,89 @@ def conferences() -> Response:
     } for c in confereces]), mimetype="application/json")
 
 
+@app.route("/tel", methods=["GET"])
+def tel() -> Response:
+    """/tel takes telephone numbers from matchings"""
+    try:
+        args = request.args
+        f = args.get("f", None)
+        t = args.get("t", None)
+        assert f and t, "f and t are required"
+
+        f = datetime.strptime(f, "%Y%m%d%H%M%S")
+        t = datetime.strptime(t, "%Y%m%d%H%M%S")
+
+        resp = matching_store.ListMatching(ListMatchingRequest(
+            start= {
+                "year": f.year,
+                "month": f.month,
+                "day": f.day,
+                "hours": f.hour,
+                "minutes": f.minute,
+                "seconds": f.second,
+                "nanos": 0,
+            },
+            end= {
+                "year": t.year,
+                "month": t.month,
+                "day": t.day,
+                "hours": t.hour,
+                "minutes": t.minute,
+                "seconds": t.second,
+                "nanos": 0,
+            },
+        ))
+
+        result = {}
+        for matching in resp.matching:
+            scammers = scammer_store.GetScammer(GetScammerRequest(id=list(matching.scammer_id)))
+            result[matching.id] = [{
+                "id": s.id,
+                "name": s.name,
+                "tel": s.tel,
+                "tags": [t for t in s.tags],
+                "calls": [c for c in s.calls],
+                "is_active": s.is_active
+            } for s in scammers.scammer]
+        return {
+            "status": "success",
+            "result": result
+        }
+
+    except Exception as e:
+        return {"error": str(e)}, 400
+
+
 @app.route("/call", methods=["GET"])
 def call() -> Response:
     """/call takes a matching and call them"""
     try:
         args = request.args
-        f = args.get("f")
-        t = args.get("t")
-        assert f and t, "f and t are required"
+        sid = args.get('sid', None)
+        tel1 = args.get('tel1', None)
+        tel2 = args.get('tel2', None)
 
-        confereces = client.conferences.list()
-        assert len(confereces) > 0, "Start a new conference first"
-        if len(confereces) > 1:
-            for c in confereces[1:]:
-                c.delete()
+        assert sid, "sid is empty"
+        assert tel1, "tel1 is empty"
+        assert tel2, "tel2 is empty"
 
-        resp = matching_store.ListMatching(ListMatchingRequest(
-            from_=f,
-            to=t,
-        ))
+        client.conferences(sid).participants.create(
+            label="scammer_talk",
+            early_media=True,
+            beep=None,
+            record=True,
+            from_=None,
+            to="+81" + tel1,
+        )
+        client.conferences(sid).participants.create(
+            label="scammer_talk",
+            early_media=True,
+            beep=None,
+            record=True,
+            from_=None,
+            to="+81" + tel2,
+        )
 
-        all_scammers = []
-
-        for index, matching in enumerate(resp.matching):
-            scammers = scammer_store.GetScammer(GetScammerRequest(id=list(matching.scammer_id)))
-            all_scammers += scammers
-
-            conference = confereces[index]
-
-            for scammer in scammers.scammer:
-                # client.conferences(conference.sid).participants.create(
-                conference.participants.create(
-                    label=f"scammer_talk_{index}",
-                    early_media=True,
-                    beep=None,
-                    # status_callback="https://myapp.com/events",
-                    # status_callback_event=["ringing"],
-                    record=True,
-                    from_=None,
-                    to="+81" + scammer.tel,
-                )
-        return {
-            "status": "success",
-            "conferences": [c.sid for c in confereces],
-            "scammer_tel": [s.tel for s in all_scammers],
-        }
     except grpc._channel._InactiveRpcError as e:
         return {"status": "failed", "error": str(e._state.details), "details": str(e.debug_error_string)}
     except Exception as e:

@@ -107,8 +107,8 @@ func (s ServiceServer) GetMatching(ctx context.Context, req *bufbuild.GetMatchin
 
 func (s ServiceServer) ListMatching(ctx context.Context, req *bufbuild.ListMatchingRequest) (*bufbuild.ListMatchingResponse, error) {
 	matchings, err := s.db.ListMatching(ctx, sqlc.ListMatchingParams{
-		CreatedAt:   ConvertDatetime2Time(req.From),
-		CreatedAt_2: ConvertDatetime2Time(req.To),
+		CreatedAt:   ConvertDatetime2Time(req.Start),
+		CreatedAt_2: ConvertDatetime2Time(req.End),
 	})
 	if err != nil {
 		return nil, err
