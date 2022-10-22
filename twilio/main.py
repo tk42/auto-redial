@@ -1,4 +1,5 @@
 import os
+import json
 import grpc
 from flask import request, Request, Response, Flask
 
@@ -26,12 +27,34 @@ client = Client(account_sid, auth_token)
 app = Flask(__name__)
 
 
+def not_completed():
+    return [c for c in client.conferences.list() if c.status != "completed"]
+
+
 @app.route("/conferences", methods=["GET"])
-def check() -> Response:
-    confereces = client.conferences.list()
-    return Response({
-        "conferences": [c.sid for c in confereces],
-    }, mimetype="application/json")
+def conferences() -> Response:
+    args = request.args
+    num = args.get("n", None)
+
+    confereces = not_completed()
+
+    if num and len(confereces) > int(num):
+        for c in confereces[int(num):]:
+            c.update(status='completed')
+        confereces = not_completed()
+
+    return Response(json.dumps([{
+        "account_sid": c.account_sid,
+        "api_version": c.api_version,
+        "date_created": str(c.date_created),
+        "date_updated": str(c.date_updated),
+        "friendly_name": c.friendly_name,
+        "region": c.region,
+        "sid": c.sid,
+        "status": c.status,
+        "uri": c.uri,
+        "reason_conference_ended": c.reason_conference_ended,
+    } for c in confereces]), mimetype="application/json")
 
 
 @app.route("/call", methods=["GET"])
